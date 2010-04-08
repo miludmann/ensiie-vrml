@@ -1,0 +1,44 @@
+#VRML V2.0 utf8
+
+Transform {
+	translation 0 0 0
+	
+			children [
+Shape {
+		appearance Appearance {
+			material DEF Sun Material {
+				diffuseColor 1 .5 0
+				emissiveColor .5 .25 0
+				specularColor 1 1 0
+				shininess 1
+				ambientIntensity 1
+			}
+		}
+		geometry Sphere {
+			
+			radius 30.00
+		}
+		}
+]
+}
+
+DEF timer TimeSensor {
+	cycleInterval 2
+	loop TRUE
+}
+
+DEF SunDc ColorInterpolator {
+	key [ 0 0.5 1 ]
+	keyValue [1 .4 0, 1 .7 0.0, 1 .4 0,]
+}
+
+DEF SunSc ColorInterpolator {
+	key [ 0 0.5 1 ]
+	keyValue [1 1 0, .2 0 0, 1 1 0,]
+}
+
+
+ROUTE timer.fraction_changed TO SunDc.set_fraction
+ROUTE SunDc.value_changed TO Sun.diffuseColor
+ROUTE timer.fraction_changed TO SunSc.set_fraction
+ROUTE SunSc.value_changed TO Sun.specularColor
