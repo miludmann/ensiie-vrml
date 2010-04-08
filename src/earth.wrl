@@ -1,0 +1,71 @@
+#VRML V2.0 utf8
+
+Viewpoint {
+	position 2200 150 0
+	orientation 0 -.5 -.1 -1.57
+	description "Terre"
+	
+}
+
+DEF Moon Transform {
+	translation 1490 0 0
+	scale 1 1 1
+	
+			children [
+				Inline { url "moon.wrl" },
+				
+			]
+		}
+
+DEF M Transform {
+	translation 1490 0 0
+	
+			children [
+Shape {
+		appearance Appearance {
+			material DEF Sun Material {
+				diffuseColor 0 0 0.7
+				emissiveColor 0 0 0
+				
+			}
+			texture ImageTexture {
+			url "../textures/terre.jpg"
+			}
+		}
+		geometry Sphere {
+			
+			radius 100.00
+		}
+		}
+]
+}
+
+DEF timer TimeSensor {
+	cycleInterval 2.7
+	loop TRUE
+}
+
+DEF Mo OrientationInterpolator {
+	key [ 0 .5 1 ]
+	keyValue [0 0 0 0, 0 1 0 3.14, 0 1 0 6.28,]
+}
+
+
+ROUTE timer.fraction_changed TO Mo.set_fraction
+ROUTE Mo.value_changed TO M.rotation
+
+DEF MoonTs TimeSensor {
+	cycleInterval 2.4
+	loop TRUE
+}
+
+DEF MoonPi OrientationInterpolator {
+	key [ 0 .5 1 ]
+	keyValue [ 0 1 0 3.14, 0 1 0 6.28, 0 1 0 9.42,  ]
+}
+
+ROUTE MoonTs.fraction_changed TO MoonPi.set_fraction
+ROUTE MoonPi.value_changed TO Moon.rotation
+
+
+

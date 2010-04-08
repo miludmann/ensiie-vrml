@@ -1,0 +1,58 @@
+#VRML V2.0 utf8
+
+NavigationInfo {
+	type "EXAMINE"
+}
+Viewpoint {
+	position 0 150 300
+	orientation 1 0 0 -.57
+	description "Systeme fictif"
+	
+}
+
+Background {
+	skyColor [
+		0.0 0.0 0.0,
+		
+		
+	]
+
+	skyAngle [ 1.309, 1.571 ]
+	groundColor [
+		0.0 0.0 0.0,
+		
+	]
+	groundAngle [ 1.309, 1.571 ]
+	
+	#back, bottom, front, left, right,top url
+	topUrl "../textures/space2.jpg"
+	backUrl "../textures/space2.jpg"
+	bottomUrl "../textures/space2.jpg"
+	frontUrl "../textures/space2.jpg"
+	leftUrl "../textures/space2.jpg"
+	rightUrl "../textures/space2.jpg"
+}
+
+Sound {
+			maxFront 5000
+			maxBack 5000
+			location 0 0 0
+			
+source AudioClip { startTime 1
+			stopTime 0
+                  url  "../sounds/massEffect.mp3" 
+			loop TRUE
+	
+              }
+
+}
+
+Transform {
+	translation 0 0 0
+	scale .01 .01 .01
+			children [
+				Inline { url "system.wrl" },
+				
+			]
+		}
+
