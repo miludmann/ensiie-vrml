@@ -1,21 +1,42 @@
 #VRML V2.0 utf8
 
 
+EXTERNPROTO Copy [ 
+                    field SFInt32    copies           
+                    field SFVec3f    center           
+                    field SFVec3f    translation      
+                    field SFVec3f    scale            
+                    field SFRotation scaleOrientation 
+                    field SFRotation rotation         
+                    field MFNode     children         
+                   ] "../protos/CopyPROTO.wrl"
+
+
 DEF EarthTs TimeSensor {
 	cycleInterval 10
 	loop TRUE
 }
 
-DEF NeptuneTs TimeSensor {
+DEF AntaeusTs TimeSensor {
 	cycleInterval 1647.9
 	loop TRUE
 }
 
-DEF Sun Transform {
+DEF AcheronTs TimeSensor {
+	cycleInterval 118.6
+	loop TRUE
+}
+
+DEF Ceinture_asteroidesTs TimeSensor {
+	cycleInterval 50
+	loop TRUE
+}
+
+DEF Exodus Transform {
 	translation 0 0 0
 	scale 5 5 5
 			children [
-				Inline { url "sun.wrl" },
+				Inline { url "exodus.wrl" },
 				
 			]
 		}
@@ -37,19 +58,65 @@ DEF EarthPi OrientationInterpolator {
 ROUTE EarthTs.fraction_changed TO EarthPi.set_fraction
 ROUTE EarthPi.value_changed TO Earth.rotation
 
-DEF Neptune Transform {
+DEF Antaeus Transform {
 	translation 0 0 0
 	scale 1 1 1
 			children [
-				Inline { url "neptune.wrl" },
+				Inline { url "antaeus.wrl" },
 				
 			]
 		}
 
-DEF NeptunePi OrientationInterpolator {
+DEF AntaeusPi OrientationInterpolator {
 	key [ 0 .5 1 ]
 	keyValue [ 0 1 0 3.14, 0 1 0 6.28, 0 1 0 9.42,  ]
 }
 
-ROUTE NeptuneTs.fraction_changed TO NeptunePi.set_fraction
-ROUTE NeptunePi.value_changed TO Neptune.rotation
+ROUTE AntaeusTs.fraction_changed TO AntaeusPi.set_fraction
+ROUTE AntaeusPi.value_changed TO Antaeus.rotation
+
+
+DEF Acheron Transform {
+	translation 0 0 0
+	scale 1 1 1
+			children [
+				Inline { url "acheron.wrl" },
+				
+			]
+		}
+
+DEF AcheronPi OrientationInterpolator {
+	key [ 0 .5 1 ]
+	keyValue [ 0 1 0 3.14, 0 1 0 6.28, 0 1 0 9.42,  ]
+}
+
+ROUTE AcheronTs.fraction_changed TO AcheronPi.set_fraction
+ROUTE AcheronPi.value_changed TO Acheron.rotation
+
+
+DEF Ceinture_asteroides Transform {
+	children [
+		Copy {
+		   copies 700
+		   center 0 0 0
+		   translation 1 0 0
+		   rotation 0 1 0 0.45
+		   scale 1 1 1
+		   children [
+    		  Transform {
+			 children [
+	    		Inline { url [ "asteroide.wrl" ] }
+			   ]
+    		  }
+    		 ]
+	 }
+	]
+}
+
+DEF Ceinture_asteroidesPi OrientationInterpolator {
+	key [ 0 .5 1 ]
+	keyValue [ 0 1 0 3.14, 0 1 0 6.28, 0 1 0 9.42,  ]
+}
+
+ROUTE Ceinture_asteroidesTs.fraction_changed TO Ceinture_asteroidesPi.set_fraction
+ROUTE Ceinture_asteroidesPi.value_changed TO Ceinture_asteroides.rotation

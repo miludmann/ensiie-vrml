@@ -6,7 +6,7 @@ NavigationInfo {
 Viewpoint {
 	position 0 150 300
 	orientation 1 0 0 -.57
-	description "Systeme fictif"
+	description "Exodus Cluster"
 	
 }
 

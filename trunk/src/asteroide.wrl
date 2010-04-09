@@ -1,0 +1,28 @@
+#VRML V2.0 utf8
+
+DEF M Transform {
+	translation 4500 0 0
+	scale 1 1 1
+	
+			children [
+				Inline { url "Phobos.wrl" },
+				
+			]
+		}
+
+
+
+DEF timer TimeSensor {
+	cycleInterval 5
+	loop TRUE
+}
+
+DEF Mo OrientationInterpolator {
+	key [ 0 .5 1 ]
+	keyValue [0 0 0 0, 0 1 0 3.14, 0 1 0 6.28,]
+}
+
+
+ROUTE timer.fraction_changed TO Mo.set_fraction
+ROUTE Mo.value_changed TO M.rotation
+

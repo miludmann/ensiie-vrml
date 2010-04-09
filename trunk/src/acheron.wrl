@@ -1,35 +1,30 @@
 #VRML V2.0 utf8
 
 Viewpoint {
-	position 47540 1000 0
+	position 14000 2000 0
 	orientation 0 -.5 -.15 -1.57
-	description "Neptune"
+	description "Acheron"
 	
 }
 
 DEF M Transform {
-	translation 45040 0 0
+	translation 10000 0 0
 	
 			children [
-
 Shape {
 		appearance Appearance {
-			
 			material DEF Sun Material {
-				diffuseColor 0.0 0.0 0.6
-				#specularColor 0 0.0 .7
-				#shininess .3
-				#ambientIntensity .2
-				emissiveColor 0 0 .2
+				diffuseColor 0.8 0.4 0.2
+				emissiveColor 0 0 0
 				
 			}
 			texture ImageTexture {
-			url "../textures/neptune.jpg"
+			url "jupiter.jpg"
 			}
 		}
 		geometry Sphere {
 			
-			radius 400.00
+			radius 1120.00
 		}
 		}
 ]
