@@ -1,0 +1,169 @@
+#VRML V2.0 utf8
+
+
+############
+## MetaData
+
+Transform {
+   translation -3 3 0
+   children [
+
+      DEF TS TouchSensor {}
+      Shape {
+	      geometry Text {
+	         fontStyle DEF FS FontStyle {
+	            family [ "SANS" ]
+	            size .25
+	         }
+	         string [
+		         " CopyPROTO.wrl "
+		         " Copy: makes multiple instances of children,      "
+		         "       applying specified transformations to each "
+		      ]
+	      }
+      }
+      Transform {
+	      translation 0 -1 0
+	      children [
+	         Shape {
+	            geometry Text {
+		            fontStyle USE FS
+		            string [
+			            " This is an externproto definition file."
+			            " To use, declare this header in your vrml file:"
+			            "    (click text to print header in vrml console,"
+			            "     for easy cut and paste)"
+			         ]
+	            }
+	         }
+	      ]
+      }
+      Transform {
+	      translation 0 -2.5 0
+	      children [
+
+	         Shape {
+	            geometry DEF TXT Text {
+		            fontStyle USE FS
+		            string [
+			            "EXTERNPROTO Copy [ "
+			            "                  field SFInt32    copies           "
+			            "                  field SFVec3f    center           "
+			            "                  field SFVec3f    translation      "
+			            "                  field SFVec3f    scale            "
+			            "                  field SFRotation scaleOrientation "
+			            "                  field SFRotation rotation         "
+			            "                  field MFNode     children         "
+			            "                 ] \"CopyPROTO.wrl\"         "
+			         ]
+	            }
+	         }
+
+	      ]
+      }
+      DEF S Script {
+	      eventIn SFBool print_isActive
+	      field   SFNode txt USE TXT
+	      directOutput TRUE
+	      url["javascript:
+	         function print_isActive(itIs) {
+	            if(itIs) {
+	               print(' ');
+	               for(var i = 0; i < txt.string.length; i++) { print(txt.string[i]); }
+	            }
+	         }
+	         "]
+      }
+   ]
+}
+ROUTE TS.isActive TO S.print_isActive
+
+
+WorldInfo {
+   info  [
+	   " Copy: makes multiple instances of children,                   "
+	   "       applying specified transformations to each              "
+	   "                                                               "
+	   " written:  1999,      peter gerstmann                          "
+	   "                      pgerstma@cgrg.ohio-state.edu             "
+	   "                      http://www.cgrg.ohio-state.edu           "
+	   "                                                               "
+	   " feel free to re-use, re-distribute, re-design as you wish.    "
+	]
+}
+
+
+
+
+########
+## Proto
+
+PROTO Copy [
+	field SFInt32    copies           1
+	field SFVec3f    center           0 0 0
+	field SFVec3f    translation      0 0 0
+	field SFVec3f    scale            1 1 1
+	field SFRotation scaleOrientation 0 0 1 0
+	field SFRotation rotation         0 0 1 0
+	field MFNode     children         []
+]
+{
+
+   Group {
+      children [
+
+	      DEF G Group { children IS children }
+	      DEF R Group { children [] }
+
+	      DEF S Script {
+	         field SFInt32    copies IS copies
+	         field SFVec3f    c  IS center
+	         field SFVec3f    t  IS translation
+	         field SFVec3f    s  IS scale
+	         field SFRotation so IS scaleOrientation
+	         field SFRotation r  IS rotation
+	         field SFNode     g  USE G
+	         field SFNode     rt USE R
+	         field SFFloat    sx 1
+	         field SFFloat    sy 1
+	         field SFFloat    sz 1
+	         field SFRotation rr 0 0 1 0
+	         url ["javascript:
+	            function newTransform(x) {
+	               var NL = '\n';
+	               var str = '' + NL + 
+	               'Transform { ' + NL +
+	                  '   center ' + c + NL +
+	                  '   translation ' + new SFVec3f(x * t.x, x * t.y, x * t.z) + NL +
+	                  '   scale ' + new SFVec3f(sx, sy, sz) + NL +
+	                  '   scaleOrientation ' + so + NL +
+	                  '   rotation ' + rr + NL +
+	                  '} ' + NL +
+	               '';
+	               sx *= s.x; sy *= s.y; sz *= s.z;
+	               rr = rr.multiply(r);
+	               return str;
+	            }
+	            function initialize() {
+	               sx = s.x; sy = s.y; sz = s.z;
+                  rr = r;
+	               var tmp = new MFNode();
+	               for(var i = 1; i <= copies; i++) {
+		               tmp[i] = new SFNode(newTransform(i));
+		               tmp[i].addChildren = g.children;
+	               }
+	               rt.addChildren = tmp;
+	               // my first inclination was to use tmp inside the loop,
+	               // thinking it would be a local variable that i could
+	               // clear each cycle.
+	               // contrariwise, it cannot be deleted --the delete operator
+	               // returns an error msg saying tmp is permanent-- (giggle),
+	               // so i moved it out of the loop, and it is much happier now.
+	            }
+	            "]
+	      }
+
+	   ]
+   }
+
+}
