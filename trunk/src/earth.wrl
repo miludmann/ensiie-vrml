@@ -1,14 +1,14 @@
 #VRML V2.0 utf8
 
 Viewpoint {
-	position 2200 150 0
+	position 2800 150 0
 	orientation 0 -.5 -.1 -1.57
 	description "Terre"
 	
 }
 
 DEF Moon Transform {
-	translation 1490 0 0
+	translation 2090 0 0
 	scale 1 1 1
 	
 			children [
@@ -18,7 +18,7 @@ DEF Moon Transform {
 		}
 
 DEF M Transform {
-	translation 1490 0 0
+	translation 2090 0 0
 	
 			children [
 Shape {
