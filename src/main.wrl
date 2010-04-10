@@ -43,8 +43,8 @@ Background {
 }
 
 Sound {
-			maxFront 5000
-			maxBack 5000
+			maxFront 4500
+			maxBack 4500
 			location 0 0 0
 			
 source AudioClip { startTime 1

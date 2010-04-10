@@ -48,3 +48,18 @@ ROUTE timer.fraction_changed TO ExodusDc.set_fraction
 ROUTE ExodusDc.value_changed TO Exodus.diffuseColor
 ROUTE timer.fraction_changed TO ExodusSc.set_fraction
 ROUTE ExodusSc.value_changed TO Exodus.specularColor
+
+
+Sound {
+			maxFront 10000
+			maxBack 10000
+			location 0 0 0
+			
+source AudioClip { startTime 1
+			stopTime 0
+                  url  "../sounds/soundOfTheSun.mp3" 
+			loop TRUE
+	
+              }
+
+}

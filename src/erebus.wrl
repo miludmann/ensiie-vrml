@@ -45,3 +45,16 @@ DEF Mo OrientationInterpolator {
 ROUTE timer.fraction_changed TO Mo.set_fraction
 ROUTE Mo.value_changed TO M.rotation
 
+Sound {
+			maxFront 600
+			maxBack 600
+			location 0 0 0
+			
+source AudioClip { startTime 1
+			stopTime 0
+                  url  "../sounds/spacey_sound_new.wav" 
+			loop TRUE
+	
+              }
+
+}
