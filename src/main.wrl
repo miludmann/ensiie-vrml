@@ -1,13 +1,22 @@
 #VRML V2.0 utf8
 
+
+## Scene Setup
 NavigationInfo {
 	type "EXAMINE"
 }
+
 Viewpoint {
 	position 0 150 300
 	orientation 1 0 0 -.57
 	description "Exodus Cluster"
 	
+} 
+Viewpoint { 
+   position 0 370 0.027
+   orientation 1 0 0 -1.57
+   description "God's eye view"
+   jump FALSE
 }
 
 Background {

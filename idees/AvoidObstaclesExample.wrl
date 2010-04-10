@@ -1,0 +1,173 @@
+#VRML V2.0 utf8
+
+
+## Protos
+EXTERNPROTO Avoidance [
+   eventIn      SFTime     updateRequest
+	eventIn      SFVec3f    set_goal
+   eventIn      SFString   set_state
+	eventIn      MFNode     set_obstacles
+	field        SFVec3f    goal 
+   field        SFFloat    goalPriority 
+	field        SFFloat    speed 
+   field        SFString   state 
+	field        MFNode     obstacles 
+	exposedField SFVec3f    position 
+   exposedField MFNode     children 
+] "../protos/AvoidObstaclesPROTO.wrl"
+
+PROTO Obstacle [
+   exposedField SFVec3f position 0 0 0
+   exposedField SFFloat repulsion 4
+   field        SFFloat radius 4
+]
+{
+   Transform {
+      translation IS position
+      children [
+         Shape {
+            appearance Appearance {
+               material Material { emissiveColor 1 0 0 transparency .6 }
+            }
+            geometry Sphere { radius IS radius }
+         }
+      ]
+   }
+}
+
+
+## Scene Setup
+Viewpoint { 
+   position 0 33.5 0.027
+   orientation -1 0 0 1.57
+   description " bird's eye view "
+   jump FALSE
+}
+Viewpoint { 
+   position 0 19.388 27.32
+   orientation -1 0 0 0.617
+   description " on the level "
+   jump FALSE
+}
+NavigationInfo { type "EXAMINE" }
+
+# Goal
+Transform {
+   rotation 1 0 0 -1.57
+   children [ ## in here its the XY plane, to match PlaneSensor
+      DEF GOAL Transform {
+         translation -4 -6 0
+         children [
+            Transform {
+               translation 0 0 -.25
+               scale 1.5 1.5 1
+               children [
+                  DEF CORNER Shape {
+                     geometry IndexedLineSet {
+                        coord Coordinate { point [ -.5 -.25 0, -.5 -.5 0, -.25 -.5 0 ] }
+                        coordIndex [ 0 1 2 -1 ]
+                        color Color { color [ 0 1 .4 ] }
+                        colorIndex [ 0 0 0 -1 ]
+                     }
+                  }
+                  Transform {
+                     rotation 0 0 1 1.57
+                     children [ USE CORNER ]
+                  }
+                  Transform {
+                     rotation 0 0 1 -1.57
+                     children [ USE CORNER ]
+                  }
+                  Transform {
+                     rotation 0 0 1 3.1415
+                     children [ USE CORNER ]
+                  }
+               ]
+            }
+         ]
+      }
+   ]
+}
+# Floor
+Transform {
+   translation 0 -1 0
+   rotation 1 0 0 -1.57
+   children [ ## in here its the XY plane, to match PlaneSensor
+      DEF PS PlaneSensor {}
+      Shape {
+         appearance Appearance {
+            material Material { diffuseColor .4 .4 .4 }
+         }
+         geometry Box { size 24 24 1 }
+      }
+   ]
+}
+
+
+## Obstacles
+DEF O1 Obstacle { position 4 0 -4 radius 4 repulsion 105 }
+DEF O2 Obstacle { position -7 0 -1 radius 3 repulsion 67.5 }
+DEF O3 Obstacle { position 3 0 7 radius 3 repulsion 75 }
+DEF PI PositionInterpolator {
+   key [ 0 .33 .66 1 ]
+   keyValue [ 3 0 7,  5 0 7,  -5 0 7,  3 0 7 ]
+}
+
+DEF A Avoidance {
+   position 10 0 -10
+   goal     -4 0 6
+   speed    3
+   obstacles [
+      USE O1
+      USE O2
+      USE O3
+   ]
+   children  [ 
+      Shape {
+         appearance DEF YEL Appearance {
+            material Material { diffuseColor 1 .8 .1 }
+         }
+         #geometry Box { size 1.25 1.25 1.25 }
+         geometry Cylinder { height 1.25 radius .625 }
+      }
+      Transform {
+         translation 0 1.5 0
+         children [
+            Shape {
+               appearance USE YEL
+               geometry Sphere { radius .5 }
+            }
+         ]
+      }
+
+   ]
+}
+
+DEF S Script { ## handle value massaging for moving target over floor
+   eventIn  SFVec3f set_pos
+   field    SFNode  g USE GOAL
+   field    SFNode  p USE PS
+   field    SFVec3f offset 0 0 0
+   eventOut SFVec3f goal_changed
+   url ["javascript:
+      function set_pos(pos) {
+         //Browser.setDescription(pos.toString());
+         var mv = offset.add(pos);
+         goal_changed = new SFVec3f(mv.x, 0, -mv.y);
+      }
+      function initialize() {
+         p.set_offset = g.translation;
+         set_pos(g.translation);
+      }
+      "]
+}
+# update requester
+DEF TIME TimeSensor { cycleInterval 10 loop TRUE }
+
+ROUTE TIME.time TO A.updateRequest
+ROUTE PS.translation_changed TO GOAL.set_translation
+ROUTE PS.translation_changed TO S.set_pos
+ROUTE S.goal_changed TO A.set_goal
+
+ROUTE TIME.fraction_changed TO PI.set_fraction
+ROUTE PI.value_changed TO O3.set_position

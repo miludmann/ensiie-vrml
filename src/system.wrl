@@ -1,5 +1,19 @@
 #VRML V2.0 utf8
 
+## Protos
+EXTERNPROTO Avoidance [
+   eventIn      SFTime     updateRequest
+	eventIn      SFVec3f    set_goal
+   eventIn      SFString   set_state
+	eventIn      MFNode     set_obstacles
+	field        SFVec3f    goal 
+   field        SFFloat    goalPriority 
+	field        SFFloat    speed 
+   field        SFString   state 
+	field        MFNode     obstacles 
+	exposedField SFVec3f    position 
+   exposedField MFNode     children 
+] "../protos/AvoidObstaclesPROTO.wrl"
 
 EXTERNPROTO Copy [ 
                     field SFInt32    copies           
@@ -22,17 +36,18 @@ DEF AntaeusTs TimeSensor {
 	loop TRUE
 }
 
-DEF AcheronTs TimeSensor {
-	cycleInterval 118.6
-	loop TRUE
-}
-
 DEF Ceinture_asteroidesTs TimeSensor {
 	cycleInterval 50
 	loop TRUE
 }
 
-DEF Exodus Transform {
+PROTO ObstacleExodus [
+   exposedField SFVec3f position 0 0 0
+   exposedField SFFloat repulsion 4
+   field        SFFloat radius 0
+]
+{
+DEF _Exodus Transform {
 	translation 0 0 0
 	scale 5 5 5
 			children [
@@ -40,6 +55,8 @@ DEF Exodus Transform {
 				
 			]
 		}
+}
+DEF	Exodus ObstacleExodus { position 0 0 0 radius 200 repulsion 20000000 }
 
 DEF Earth Transform {
 	translation 0 0 0
@@ -75,8 +92,14 @@ DEF AntaeusPi OrientationInterpolator {
 ROUTE AntaeusTs.fraction_changed TO AntaeusPi.set_fraction
 ROUTE AntaeusPi.value_changed TO Antaeus.rotation
 
-
-DEF Acheron Transform {
+PROTO ObstacleAcheron [
+   exposedField SFVec3f position 0 0 0
+   exposedField SFFloat repulsion 4
+   field        SFFloat radius 0
+]
+{
+}
+DEF _Acheron Transform {
 	translation 0 0 0
 	scale 1 1 1
 			children [
@@ -85,13 +108,20 @@ DEF Acheron Transform {
 			]
 		}
 
-DEF AcheronPi OrientationInterpolator {
+DEF AcheronTs TimeSensor {
+	cycleInterval 118.6
+	loop TRUE
+}
+
+DEF AcheronOi OrientationInterpolator {
 	key [ 0 .5 1 ]
 	keyValue [ 0 1 0 3.14, 0 1 0 6.28, 0 1 0 9.42,  ]
 }
 
-ROUTE AcheronTs.fraction_changed TO AcheronPi.set_fraction
-ROUTE AcheronPi.value_changed TO Acheron.rotation
+ROUTE AcheronTs.fraction_changed TO AcheronOi.set_fraction
+ROUTE AcheronOi.value_changed TO _Acheron.rotation
+
+DEF	Acheron ObstacleAcheron { position 0 0 0 radius 1000 repulsion 200000000 }
 
 
 DEF Ceinture_asteroides Transform {
@@ -120,3 +150,123 @@ DEF Ceinture_asteroidesPi OrientationInterpolator {
 
 ROUTE Ceinture_asteroidesTs.fraction_changed TO Ceinture_asteroidesPi.set_fraction
 ROUTE Ceinture_asteroidesPi.value_changed TO Ceinture_asteroides.rotation
+
+##################################################################################################
+
+PROTO Obstacle [
+   exposedField SFVec3f position 0 0 0
+   exposedField SFFloat repulsion 4
+   field        SFFloat radius 4
+]
+{
+   Transform {
+      translation IS position
+      children [
+         Shape {
+            appearance Appearance {
+               material Material { emissiveColor 1 0 0 transparency .6 }
+            }
+            geometry Sphere { radius IS radius }
+         }
+      ]
+   }
+}
+
+# Goal
+Transform {
+   rotation 1 0 0 -1.57
+   children [ ## in here its the XY plane, to match PlaneSensor
+      DEF GOAL Transform {
+         translation -4 -6 0
+         children [
+            Transform {
+               translation 0 0 -.25
+               scale 250 250 1
+               children [
+                  DEF CORNER Shape {
+                     geometry IndexedLineSet {
+                        coord Coordinate { point [ -.5 -.25 0, -.5 -.5 0, -.25 -.5 0 ] }
+                        coordIndex [ 0 1 2 -1 ]
+                        color Color { color [ 0 1 .4 ] }
+                        colorIndex [ 0 0 0 -1 ]
+                     }
+                  }
+                  Transform {
+                     rotation 0 0 1 1.57
+                     children [ USE CORNER ]
+                  }
+                  Transform {
+                     rotation 0 0 1 -1.57
+                     children [ USE CORNER ]
+                  }
+                  Transform {
+                     rotation 0 0 1 3.1415
+                     children [ USE CORNER ]
+                  }
+               ]
+            }
+         ]
+      }
+   ]
+}
+# Floor
+Transform {
+   translation 0 -1 0
+   rotation 0 0 0 -1.57
+   children [ ## in here its the XY plane, to match PlaneSensor
+      DEF PS PlaneSensor {}
+      Shape {
+         appearance Appearance {
+            material Material { diffuseColor .4 .4 .4
+								transparency 0.95 }
+         }
+         geometry Cylinder { height 1 radius 13000 }
+      }
+   ]
+}
+
+DEF A Avoidance {
+   position 10000 0 -10
+   goal     -4 0 6
+   speed    1200
+   obstacles [
+      USE Exodus
+	  USE Acheron
+   ]
+   children  [ 
+	   Transform {
+		   scale 100 100 100
+		   rotation	0 0 0 -1.57
+		   children [
+				Inline { url [ "ovni.wrl" ] }
+			]	
+		}
+
+   ]
+}
+
+DEF S Script { ## handle value massaging for moving target over floor
+   eventIn  SFVec3f set_pos
+   field    SFNode  g USE GOAL
+   field    SFNode  p USE PS
+   field    SFVec3f offset 0 0 0
+   eventOut SFVec3f goal_changed
+   url ["javascript:
+      function set_pos(pos) {
+         var mv = offset.add(pos);
+         goal_changed = new SFVec3f(mv.x, 0, -mv.y);
+      }
+      function initialize() {
+         p.set_offset = g.translation;
+         set_pos(g.translation);
+      }
+      "]
+}
+# update requester
+DEF TIME TimeSensor { cycleInterval 10 loop TRUE }
+
+ROUTE TIME.time TO A.updateRequest
+ROUTE PS.translation_changed TO GOAL.set_translation
+ROUTE PS.translation_changed TO S.set_pos
+ROUTE S.goal_changed TO A.set_goal
+

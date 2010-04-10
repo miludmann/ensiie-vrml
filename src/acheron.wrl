@@ -24,7 +24,7 @@ Shape {
 		}
 		geometry Sphere {
 			
-			radius 1120.00
+			radius 1000.00
 		}
 		}
 ]
