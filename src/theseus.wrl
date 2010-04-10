@@ -1,30 +1,41 @@
 #VRML V2.0 utf8
 
 Viewpoint {
-	position 14000 2000 0
+	position 19000 1500 0
 	orientation 0 -.5 -.15 -1.57
-	description "Acheron"
+	description "Theseus"
 	
 }
 
-DEF M Transform {
-	translation 10000 0 0
+Transform {
+	translation 14290 0 0
+	scale 250 5 400
 	
 			children [
+				Inline { url "anneaux.wrl" },
+				
+			]
+		}
+
+DEF M Transform {
+	translation 14290 0 0
+	
+			children [
+
 Shape {
 		appearance Appearance {
 			material DEF Sun Material {
-				diffuseColor 0.8 0.4 0.2
-				emissiveColor 0 0 0
+				diffuseColor 0.6 0.4 0.2
+				emissiveColor 0 0.0 .0
 				
 			}
 			texture ImageTexture {
-			url "../textures/acheron.jpg"
+			url "../textures/theseus.jpg"
 			}
 		}
 		geometry Sphere {
 			
-			radius 1000.00
+			radius 942.00
 		}
 		}
 ]

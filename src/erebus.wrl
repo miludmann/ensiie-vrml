@@ -1,30 +1,31 @@
 #VRML V2.0 utf8
 
 Viewpoint {
-	position 14000 2000 0
+	position 19000 1000 0
 	orientation 0 -.5 -.15 -1.57
-	description "Acheron"
+	description "Erebus"
 	
 }
 
 DEF M Transform {
-	translation 10000 0 0
+	translation 17750 0 0
 	
 			children [
+
 Shape {
 		appearance Appearance {
 			material DEF Sun Material {
-				diffuseColor 0.8 0.4 0.2
-				emissiveColor 0 0 0
+				diffuseColor 0.1 0.9 0.3
+				emissiveColor 0 0.2 0
 				
 			}
 			texture ImageTexture {
-			url "../textures/acheron.jpg"
+			url "../textures/erebus.jpg"
 			}
 		}
 		geometry Sphere {
 			
-			radius 1000.00
+			radius 400.00
 		}
 		}
 ]
@@ -37,7 +38,7 @@ DEF timer TimeSensor {
 
 DEF Mo OrientationInterpolator {
 	key [ 0 .5 1 ]
-	keyValue [0 0 0 0, 0 1 0 3.14, 0 1 0 6.28,]
+	keyValue [0 0 0 0, 0 0 1 3.14, 0 0 1 6.28,]
 }
 
 

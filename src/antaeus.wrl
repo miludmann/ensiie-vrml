@@ -24,7 +24,7 @@ Shape {
 				
 			}
 			texture ImageTexture {
-			url "../textures/neptune.jpg"
+			url "../textures/antaeus.jpg"
 			}
 		}
 		geometry Sphere {

@@ -3,7 +3,9 @@
 Shape {
   appearance Appearance {
     material Material {
-      diffuseColor 1 1 0
+	    diffuseColor	.8 .8 .8
+	    specularColor	.5 .5 .5
+	    shininess		0.2
     } # end material
   } # end appearance
 
@@ -24,7 +26,9 @@ Shape {
 Shape {
   appearance Appearance {
     material Material {
-      diffuseColor 0 1 0
+	    diffuseColor	.8 .8 .8
+	    specularColor	.5 .5 .5
+	    shininess		0.2
     } # end mat
   } # end app
   geometry Cylinder {
@@ -37,7 +41,9 @@ Shape {
 Shape {
   appearance Appearance {
     material Material {
-      diffuseColor 0 0 1
+	    diffuseColor	.8 .8 .8
+	    specularColor	.5 .5 .5
+	    shininess		0.2
     } # end mat
   } # end app
     
@@ -51,7 +57,9 @@ Shape {
 Shape {
   appearance Appearance {
     material Material {
-      diffuseColor 1 0 0
+	    diffuseColor	.8 .8 .8
+	    specularColor	.5 .5 .5
+	    shininess		0.2
     } # end mat
   } # end app
 
