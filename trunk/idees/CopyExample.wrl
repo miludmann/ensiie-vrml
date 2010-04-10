@@ -1,0 +1,34 @@
+#VRML V2.0 utf8
+
+EXTERNPROTO Copy [ 
+                    field SFInt32    copies           
+                    field SFVec3f    center           
+                    field SFVec3f    translation      
+                    field SFVec3f    scale            
+                    field SFRotation scaleOrientation 
+                    field SFRotation rotation         
+                    field MFNode     children         
+                   ] "CopyPROTO.wrl"
+
+NavigationInfo {
+   type [ "EXAMINE" "ANY" ]
+   headlight FALSE
+}
+
+Copy {
+   copies 5
+   center 0 0 0
+   translation 1.5 .3 0
+   rotation 0 0 1 .17
+   scale .75 .75 .75
+   children [
+      Transform {
+	 rotation 1 0 0 .51
+	 translation -4.5 -.5 -.5
+	 scale .75 .75 .75
+	 children [
+	    Inline { url [ "colorCube.wrl" ] }
+	   ]
+      }
+     ]
+}
