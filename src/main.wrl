@@ -3,7 +3,10 @@
 
 ## Scene Setup
 NavigationInfo {
+	avatarSize [ 0.25, 1.6, 0.75 ]
 	type "EXAMINE"
+	headlight TRUE
+	speed 2.0
 }
 
 Viewpoint {
