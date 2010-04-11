@@ -124,8 +124,40 @@ DEF AcheronOi OrientationInterpolator {
 ROUTE AcheronTs.fraction_changed TO AcheronOi.set_fraction
 ROUTE AcheronOi.value_changed TO _Acheron.rotation
 
-DEF	Acheron ObstacleAcheron { position 10000 0 0 radius 200 repulsion 200000000 }
-ROUTE AcheronOi.value_changed TO Acheron.set_rotation
+DEF	Acheron ObstacleAcheron { position 9000 0 0 radius 1000 repulsion 200000000 }
+
+
+DEF SAcheron Script { 
+   eventIn  SFRotation set_pos
+   field    SFNode  g USE Acheron
+   eventOut SFVec3f goal_changed
+   url ["javascript:
+      function set_pos(rot) {
+		 //parent.vrmlframe.document.write('bla');
+		 /* 
+		 if(rot.angle > 6.28)
+		 {
+		 goal_changed = new SFVec3f(9000*Math.cos(rot.angle), 0, (-1)*9000*Math.sin(rot.angle));
+		 } else {
+		 goal_changed = new SFVec3f(9000*Math.cos(rot.angle), 0, (1)*9000*Math.sin(rot.angle));
+		 }
+		  */
+		 goal_changed = new SFVec3f(9000*Math.cos(rot.angle), 0, (9000*Math.sin(rot.angle)));
+
+      }
+      "]
+}
+
+ROUTE AcheronOi.value_changed TO SAcheron.set_pos
+ROUTE SAcheron.goal_changed	TO Acheron.position
+
+
+#ROUTE TIME.time TO A.updateRequest
+#ROUTE PS.translation_changed TO GOAL.set_translation
+#ROUTE PS.translation_changed TO S.set_pos
+#ROUTE S.goal_changed TO A.set_goal
+
+
 
 
 DEF Ceinture_asteroides_H Transform {
@@ -177,12 +209,6 @@ DEF Ceinture_asteroides_B Transform {
 	]
 }
 
-DEF Ceinture_asteroidesPi OrientationInterpolator {
-	key [ 0 .5 1 ]
-	keyValue [ 0 1 0 3.14, 0 1 0 6.28, 0 1 0 9.42,  ]
-}
-
-ROUTE Ceinture_asteroidesTs.fraction_changed TO Ceinture_asteroidesPi.set_fraction
 ROUTE Ceinture_asteroidesPi.value_changed TO Ceinture_asteroides_B.rotation
 
 DEF TheseusTs TimeSensor {
@@ -234,7 +260,7 @@ ROUTE ErebusPi.value_changed TO Erebus.rotation
 
 
 ##################################################################################################
-
+# Traitement du vaisseau déplaçable et de ses collisions
 PROTO Obstacle [
    exposedField SFVec3f position 0 0 0
    exposedField SFFloat repulsion 4
@@ -254,12 +280,12 @@ PROTO Obstacle [
    }
 }
 
-# Goal
+# Cible déplaçable à atteindre
 Transform {
    rotation 1 0 0 -1.57
    children [ ## in here its the XY plane, to match PlaneSensor
       DEF GOAL Transform {
-         translation -4 -6 0
+         translation -5000 0 0
          children [
             Transform {
                translation 0 0 -.25
@@ -291,7 +317,7 @@ Transform {
       }
    ]
 }
-# Floor
+# Sol virtuel
 Transform {
    translation 0 -1 0
    rotation 0 0 0 -1.57
@@ -309,7 +335,7 @@ Transform {
 
 DEF A Avoidance {
    position 5000 0 0
-   goal     -4 0 6
+   goal     -5000 0 0
    speed    1200
    obstacles [
       USE Exodus
@@ -327,7 +353,7 @@ DEF A Avoidance {
    ]
 }
 
-DEF S Script { ## handle value massaging for moving target over floor
+DEF S Script { 
    eventIn  SFVec3f set_pos
    field    SFNode  g USE GOAL
    field    SFNode  p USE PS
@@ -344,7 +370,7 @@ DEF S Script { ## handle value massaging for moving target over floor
       }
       "]
 }
-# update requester
+
 DEF TIME TimeSensor { cycleInterval 10 loop TRUE }
 
 ROUTE TIME.time TO A.updateRequest

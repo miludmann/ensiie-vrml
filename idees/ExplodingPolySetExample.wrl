@@ -1,0 +1,107 @@
+#VRML V2.0 utf8
+
+
+## Protos
+EXTERNPROTO ExplodingPolySet [
+   eventIn  SFTime  explodeTime # detonation trigger
+   field    SFNode  coord       # standard IFS fare
+   field    MFInt32 coordIndex  # likewise
+   field    SFFloat rspeed      # rotation speed of fragments
+   field    SFFloat cspeed      # escape speed of fragments
+   field    SFTime  duration    # duration of explosion
+   field    SFFloat gravitation # gravitational acceleration (acts on y axis)
+   field    SFFloat groundLevel # y intercept with ground
+   field    SFFloat scale       # poly-shrinkage (< 1 creates gaps between poly seams)
+   eventOut SFBool  isActive    # whether or not the explosion is occuring
+]"ExplodingPolySetPROTO.wrl"
+
+
+
+## Scene setup
+Viewpoint {
+   position 0 1.5 20
+}
+DirectionalLight{
+   ambientIntensity 0
+   direction 0.3 -1 -0.1
+}
+Background {
+   groundAngle [ 0.9, 1.5, 1.57 ]
+   groundColor [
+		0 0.333 0,
+		0 0.4 0,
+		0 0.5 0,
+		0.62 0.67 0.60
+	]
+   skyAngle [ 0.9, 1.5, 1.57 ]
+   skyColor [
+	   0.21 0.18 0.66,
+	   0.2 0.44 0.85,
+	   0.51 0.81 0.95,
+	   0.77 0.8 0.82
+	]
+}
+NavigationInfo {
+   type [ "WALK", "ANY" ]
+   headlight FALSE
+}
+
+
+
+## Geo to explode
+Transform {
+   scale 2 2 2
+   children [
+      DEF T TouchSensor{}
+      Shape {
+	      geometry DEF EP ExplodingPolySet {	
+	         duration 4
+	         cspeed 1
+	         gravitation 1
+	         coord Coordinate {
+	            point [
+		            0 0 1, .5878 0 .809, -.2764 .4472 .8507, .2629 .5257 .809,
+		            .7236 .4472 .5257, -.5878 0 .809, .9511 0 .309, -.1625 .8507 .5,
+		            0 1 0, .4253 .8507 .309, -.6882 .5257 .5, -.8944 .4472 0,
+		            -.5257 .8507 0, .4253 .8507 -.309, .7236 .4472 -.5257, .8507 .5257 0,
+		            -.1625 .8507 -.5, -.2764 .4472 -.8507, .2629 .5257 -.809,
+		            .9511 0 -.309, .5878 0 -.809, 0 0 -1, -.5878 0 -.809,
+		            -.6882 .5257 -.5, -.9511 0 -.309, -.9511 0 .309
+		         ]
+	         }
+	         coordIndex [
+			      0 2 3 -1, 1 3 4 -1, 0 3 1 -1, 0 5 2 -1, 6 1 4 -1, 2 7 3 -1, 7 8 9 -1,
+			      3 9 4 -1, 7 9 3 -1, 2 10 7 -1, 10 11 12 -1, 7 12 8 -1, 10 12 7 -1,
+			      8 13 9 -1, 13 14 15 -1, 9 15 4 -1, 13 15 9 -1, 8 16 13 -1, 16 17 18 -1,
+			      13 18 14 -1, 16 18 13 -1, 14 19 15 -1, 15 6 4 -1, 19 6 15 -1,
+			      14 20 19 -1, 21 17 22 -1, 20 14 18 -1, 21 18 17 -1, 20 18 21 -1,
+			      17 23 22 -1, 23 11 24 -1, 23 24 22 -1, 17 16 23 -1, 16 8 12 -1,
+			      23 12 11 -1, 16 12 23 -1, 11 25 24 -1, 11 10 25 -1, 10 2 5 -1,
+			      10 5 25 -1
+		      ]
+	      }
+	      appearance Appearance {
+	         material Material {
+	            diffuseColor 1 1 0
+	         }
+	      }
+      }
+   ]
+}
+
+
+## Ground
+Shape {
+   geometry Box {
+      size 100 0.01 100
+   }
+   appearance Appearance {
+      material Material {
+	      diffuseColor 0.2 0.6 0.3
+      }
+   }
+}
+
+
+## Routes
+ROUTE T.touchTime TO EP.explodeTime

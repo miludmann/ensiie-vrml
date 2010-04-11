@@ -19,7 +19,7 @@ DEF timer TimeSensor {
 
 DEF Mo OrientationInterpolator {
 	key [ 0 .5 1 ]
-	keyValue [0 0 0 0, 0 1 0 3.14, 0 1 0 6.28,]
+	keyValue [0 0 0 0, 1 0 0 3.14, 1 0 0 6.28,]
 }
 
 
