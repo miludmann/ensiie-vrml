@@ -37,7 +37,7 @@ DEF AntaeusTs TimeSensor {
 }
 
 DEF Ceinture_asteroidesTs TimeSensor {
-	cycleInterval 60
+	cycleInterval 100
 	loop TRUE
 }
 

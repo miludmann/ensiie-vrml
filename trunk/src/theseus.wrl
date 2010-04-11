@@ -7,39 +7,62 @@ Viewpoint {
 	
 }
 
-Transform {
+DEF	Theseus Transform {
 	translation 14290 0 0
-	scale 250 5 400
-	
+	children [
+		Transform {
+			translation 0 50 0
+			scale 300 5 450
 			children [
-				Inline { url "anneaux.wrl" },
-				
+				Inline { url "anneaux.wrl" }		
+			]
+		}
+		Transform {
+			translation 0 -50 0
+			scale 450 5 300
+			children [
+				Inline { url "anneaux.wrl" }		
 			]
 		}
 
-DEF M Transform {
-	translation 14290 0 0
-	
-			children [
+		DEF M Transform {	
+					children [
 
-Shape {
-		appearance Appearance {
-			material DEF Sun Material {
-				diffuseColor 0.6 0.4 0.2
-				emissiveColor 0 0.0 .0
+							Shape {
+							appearance Appearance {
+								material DEF Sun Material {
+									diffuseColor 0.6 0.4 0.2
+									emissiveColor 0 0.0 .0
 				
-			}
-			texture ImageTexture {
-			url "../textures/theseus.jpg"
-			}
-		}
-		geometry Sphere {
+								}
+								texture ImageTexture {
+								url "../textures/theseus.jpg"
+								}
+							}
+							geometry Sphere {
 			
-			radius 942.00
+								radius 942.00
+							}
+							}
+							Shape {
+							appearance Appearance {
+								material DEF Atmo Material {
+									diffuseColor 0.5 0.5 0.5
+									emissiveColor 0 0 0
+									transparency 0.8
+				
+								}
+							}
+							geometry Sphere {
+			
+								radius 1100.00
+							}
+							}
+				]
 		}
-		}
-]
+	]
 }
+
 
 DEF timer TimeSensor {
 	cycleInterval 5
@@ -53,5 +76,5 @@ DEF Mo OrientationInterpolator {
 
 
 ROUTE timer.fraction_changed TO Mo.set_fraction
-ROUTE Mo.value_changed TO M.rotation
+ROUTE Mo.value_changed TO Theseus.rotation
 

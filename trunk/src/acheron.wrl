@@ -1,32 +1,46 @@
 #VRML V2.0 utf8
 
 Viewpoint {
-	position 14000 2000 0
+	position 12000 2000 0
 	orientation 0 -.5 -.15 -1.57
 	description "Acheron"
 	
 }
 
 DEF M Transform {
-	translation 10000 0 0
+	translation 9000 0 0
 	
 			children [
-Shape {
-		appearance Appearance {
-			material DEF Sun Material {
-				diffuseColor 0.8 0.4 0.2
-				emissiveColor 0 0 0
+					Shape {
+					appearance Appearance {
+						material DEF Sun Material {
+							diffuseColor 0.8 0.4 0.2
+							emissiveColor 0 0 0
 				
-			}
-			texture ImageTexture {
-			url "../textures/acheron.jpg"
-			}
-		}
-		geometry Sphere {
+						}
+						texture ImageTexture {
+						url "../textures/acheron.jpg"
+						}
+					}
+					geometry Sphere {
 			
-			radius 1000.00
-		}
-		}
+						radius 1000.00
+					}
+					}
+					Shape {
+					appearance Appearance {
+						material DEF Atmo Material {
+							diffuseColor 0.8 0.2 0.2
+							emissiveColor 0 0 0
+							transparency 0.55
+				
+						}
+					}
+					geometry Sphere {
+			
+						radius 1200.00
+					}
+					}
 ]
 }
 

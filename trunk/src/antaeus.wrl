@@ -12,26 +12,40 @@ DEF M Transform {
 	
 			children [
 
-Shape {
-		appearance Appearance {
+				Shape {
+				appearance Appearance {
 			
-			material DEF Sun Material {
-				diffuseColor 0.0 0.0 0.6
-				#specularColor 0 0.0 .7
-				#shininess .3
-				#ambientIntensity .2
-				emissiveColor 0 0 .2
+					material DEF Sun Material {
+						diffuseColor 0.0 0.0 0.6
+						#specularColor 0 0.0 .7
+						#shininess .3
+						#ambientIntensity .2
+						emissiveColor 0 0 .2
 				
-			}
-			texture ImageTexture {
-			url "../textures/antaeus.jpg"
-			}
-		}
-		geometry Sphere {
+					}
+					texture ImageTexture {
+					url "../textures/antaeus.jpg"
+					}
+				}
+				geometry Sphere {
 			
-			radius 400.00
-		}
-		}
+					radius 400.00
+				}
+				}
+				Shape {
+					appearance Appearance {
+						material DEF Atmo Material {
+							diffuseColor 0.1 0.1 0.8
+							emissiveColor 0 0 0
+							transparency 0.7
+				
+						}
+					}
+					geometry Sphere {
+			
+						radius 550.00
+					}
+					}
 ]
 }
 

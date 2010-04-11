@@ -21,7 +21,7 @@ DEF M Transform {
 	translation 2090 0 0
 	
 			children [
-Shape {
+		Shape {
 		appearance Appearance {
 			material DEF Sun Material {
 				diffuseColor 0 0 0.7
@@ -35,6 +35,20 @@ Shape {
 		geometry Sphere {
 			
 			radius 100.00
+		}
+		}
+		Shape {
+		appearance Appearance {
+			material DEF Atmo Material {
+				diffuseColor 0.0 0.2 0.8
+				emissiveColor 0 0 0
+				transparency 0.8
+	
+			}
+		}
+		geometry Sphere {
+
+			radius 120.00
 		}
 		}
 ]

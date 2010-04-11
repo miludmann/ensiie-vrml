@@ -12,22 +12,36 @@ DEF M Transform {
 	
 			children [
 
-Shape {
-		appearance Appearance {
-			material DEF Sun Material {
-				diffuseColor 0.1 0.9 0.3
-				emissiveColor 0 0.2 0
+			Shape {
+			appearance Appearance {
+				material DEF Sun Material {
+					diffuseColor 0.1 0.9 0.3
+					emissiveColor 0 0.2 0
 				
+				}
+				texture ImageTexture {
+				url "../textures/erebus.jpg"
+				}
 			}
-			texture ImageTexture {
-			url "../textures/erebus.jpg"
-			}
-		}
-		geometry Sphere {
+			geometry Sphere {
 			
-			radius 400.00
-		}
-		}
+				radius 400.00
+			}
+			}
+			Shape {
+			appearance Appearance {
+				material DEF Atmo Material {
+					diffuseColor 0.3 0.9 0.1
+					emissiveColor 0 0 0
+					transparency 0.55
+		
+				}
+			}
+			geometry Sphere {
+	
+				radius 600.00
+			}
+			}
 ]
 }
 
