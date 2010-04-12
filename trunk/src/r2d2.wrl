@@ -1,0 +1,517 @@
+#VRML V2.0 utf8
+
+# Name : R2D2
+# Created by : David J.P. OTT
+# Date : mai 1998
+#
+# Description :
+# The basic but yet unachieved purpose of this robot is
+# to serve as a guide in a virual world. For the moment
+# it's more a toy than a guide. It can turn the head when
+# clicked, swing the body when clicked, dance (move on the legs)
+# when clicked, and produce a holographic:) contents, that could
+# eventually serve as a map cheat sheet.
+# 2 levels of detail (LOD) should increase rendering.
+
+DEF r2d2 Transform {
+  scale .2 .2 .2
+  children Transform {
+    translation 0 6.5 0
+    children [
+	LOD {
+	range [ 500]
+	level [
+###################################
+# level 0
+###################################
+Group {
+children [
+      DEF PI_r2d2 PositionInterpolator {
+        key [0.0, .2, .5, .7, 1.0]
+	keyValue [0 0 0, 7 0 -7, -5 0 0, 0 0 -15, 0 0 0]
+      }
+      DEF OI_r2d2 OrientationInterpolator {
+        key [0.0, .2, .5, .51, .7, .71,.73, 1.0]
+        keyValue [0 1 0 -.78, 0 1 0 -1, 0 1 0 -1, 0 1 0 -2.50, 0 1 0 -4, 0 1 0 -5.4, 0 1 0 -6.28, 0 1 0 -6.28]
+      }
+      DEF TS_r2d2 TimeSensor {cycleInterval 5}
+      DEF TS2_r2d2 TimeSensor {cycleInterval 5}
+      Sound {
+	priority 1
+	minFront 100
+	minBack 100
+	maxFront 150
+	maxBack 150
+	source DEF S_r2d2 AudioClip {
+	  url "../sounds/r2d2_chat.wav"
+	}
+      }
+      Group {
+        children [
+
+############################
+# r2d2 legs
+############################
+
+DEF R2D2_Propulsion Group {
+	children [
+	Transform {
+		translation 3.5 -6.3 0
+
+	children [
+		DEF R2D2_Leg&Foot Group {
+		children [
+
+
+	#
+	# R2D2_Hip&Thigh
+	#
+      Transform {
+	 translation 0 2.5 0
+	 children [
+
+	    #
+	    # R2D2_Hip
+	    #
+	    Transform {
+	       translation 0 1.5 0
+	       rotation 0 1 0 1.57
+	       children [
+		Transform {
+			translation 0 .9 .15
+			rotation 1 0 0 -1.57
+			children Shape {
+				appearance Appearance {
+					material Material {
+						diffuseColor 1 1 1
+					}
+				}
+				geometry Cylinder {
+					radius .3
+					height .15
+				}
+			}
+		}		
+
+		  Transform {
+		     rotation 1 0 0 -1.57
+		     children [
+			DEF R2D2_Hip Shape {
+			   appearance Appearance {
+			      material Material {
+				 diffuseColor 1 1 1
+			      }
+			   }
+			   geometry Extrusion { 
+			      crossSection     [ 1 1, 1 -1, -1 -1, 
+						 -1 1, -.75 1.75,
+						 0 2, .75 1.75, 1 1 ]
+			      orientation      0 1 0 0
+			      scale            1 1
+			      spine            [ 0 0 0, 0 1 0 ]
+			   }
+
+			}
+		       ]
+		  }
+		 ]
+	    }
+
+	    #
+	    # R2D2_Thigh
+	    #
+
+	    DEF R2D2_Thigh Transform {
+		translation -.4 .75 0
+		children [
+			Shape {
+	       appearance Appearance {
+		  material Material {
+		     diffuseColor 1 1 1
+		  }
+	       }
+	       geometry Box {
+		  size .8 4.5 1
+	       }
+			}
+		]
+		}
+	   ]
+      }
+
+      #
+      # R2D2_Foot
+      #
+      DEF R2D2_Foot Transform { 
+	translation -.4 0 0
+	children Shape {
+	 appearance Appearance {
+	    material Material {
+	       diffuseColor 1 1 1
+	    }
+	 }
+	 geometry Extrusion { 
+	    crossSection     [ 1 1.5, 1 -1.5, -1 -1.5,
+			       -1 1.5, 1 1.5 ]
+	    orientation      0 0 1 0
+	    scale            [ 1 1, .5 .5 ]
+	    spine            [ 0 0 0, 0 1 0 ]
+	 }
+	}
+      }
+     ]
+}
+
+Transform {
+		translation -7 0 0
+		rotation 0 1 0 3.14
+		children USE R2D2_Leg&Foot
+}	
+]
+}
+]
+}
+
+      	  DEF TOS_r2d2 TouchSensor {}
+        ]
+      }
+
+############################
+# r2d2 trunk
+############################
+
+DEF r2d2_trunk Transform {
+  center 0 -2 0
+  children [
+    DEF head Transform {
+      children [
+
+#
+# button on the head
+#
+	Transform {
+	  translation 0 2 0
+	  children [
+            DEF PI_button PositionInterpolator {
+	      key [ 0.0, .4, .6, 1.0 ]
+	      keyValue [ 0 0 0, 0 -.4 0, 0 -.4 0, 0 0 0]
+	    }
+	    DEF button Transform {
+	      scale .1 .1 .1
+	      children Shape {
+		appearance Appearance {
+  		  material Material {
+		    diffuseColor 1 0 0
+		    specularColor 1 1 1
+		    shininess 1
+		  }
+		}
+		geometry Extrusion {
+		  creaseAngle 1
+		  crossSection [ 0 8, 3 8, 6 6, 8 3,
+				8 0, 8 -3, 6 -6, 3 -8,
+				0 -8, -3 -8, -6 -6, -8 -3,
+				-8 0, -8 3, -6 6, -3 8, 0 8 ]
+		  spine [ 0 0 0, 0 8 0, 0 8 0, 0 10 0, 0 12 0, 0 13 0 ] 
+		  scale [ .5 .5, .5 .5, 1 1, .95 .95, .75 .75, .4 .4 ]
+		}
+	      }
+	    }
+	    Sound {
+	      priority 1
+	      minFront 100
+	      minBack 100
+	      maxFront 150
+	      maxBack 150
+	      source DEF S_button AudioClip {
+		url "../sounds/sentnc16.wav"
+	      }
+	    }
+	    DEF TOS_button TouchSensor {}
+	    DEF TS_button TimeSensor { cycleInterval 1.0 }
+	  ]
+	}
+
+#
+# Sphere of the head
+#
+	Group {
+  	  children [
+	    Shape {
+	      appearance Appearance {
+		material Material {
+		  diffuseColor 1 1 1
+		}
+	      }
+	      geometry Sphere {
+		radius 2.5
+	      }
+	    }
+	    Sound {
+	      priority .9
+	      minFront 100
+	      minBack 100
+	      maxFront 150
+	      maxBack 150
+	      source DEF S_head AudioClip {
+		url "../sounds/sentnc20.wav"
+	      }
+	    }
+	    DEF TOS_head TouchSensor {}
+	    DEF OI_head OrientationInterpolator {
+	      key [ 0.0, .25, .5, .75, 1.0]
+	      keyValue [ 0 1 0 0, 0 1 0 1.57, 0 1 0 3.14, 0 1 0 4.71, 0 1 0 6.28]
+	    }
+	    DEF TS_head TimeSensor { cycleInterval 1.6 }
+	  ]
+	}
+#
+# The eye
+#
+	Transform {
+	  rotation 1 0 0 -.25
+	  children [
+	    Transform {
+	      translation 0 0 2.5
+	      children [
+		DEF SW_holo Switch {
+		  whichChoice 0
+		  choice [
+		    Shape {		# choice 0
+		      appearance Appearance {
+			material Material {
+			  diffuseColor 0 0 .4
+			  shininess 1
+			  specularColor 1 0 0
+			}
+		      }
+		      geometry Sphere {
+			radius .4
+		      }
+		    }
+		    Group {		# choice 1
+		      children [
+			Shape {
+			  appearance Appearance {
+			    material Material {
+			      diffuseColor 0 0 .4
+			      shininess 1
+			      specularColor 1 0 0
+			    }
+			  }
+			  geometry Sphere {
+			    radius .4
+			  }
+			}
+			Collision {
+			  collide FALSE
+			    children [
+			      Transform {
+				translation 0 0 10
+				children Billboard {
+				  axisOfRotation 0 1 0
+				  children [ # put your holograms here
+				    Shape {
+				      appearance Appearance {}
+				      geometry Text {	
+					fontStyle FontStyle {
+					  justify ["MIDDLE","MIDDLE"]
+					}
+					string "hello world"
+				      }
+				    }
+				  ]
+				}
+			      }
+			      Transform {
+				translation 0 0 5
+				rotation 1 0 0 -1.57
+				children [
+				  Shape {
+				    appearance DEF app_holo Appearance {
+				      material Material {
+					diffuseColor 1 1 1
+					transparency .5
+					emissiveColor 1 1 1
+				      }
+				    }
+				    geometry Cone {
+#				      bottom FALSE
+				      height 10
+				      bottomRadius 3
+				    }
+				  }
+				]
+			      }
+			    ]
+			  }
+			]
+		      }
+		    ]
+		  }
+		  DEF SCR_holo Script {
+		    eventIn SFTime touchTime
+		    eventOut SFInt32 whichChoice
+		    url ["vrmlscript:
+		      function initialize() {
+		        whichChoice = 0;
+		      }
+		      function touchTime(value,time) {
+		        if (whichChoice == 1) whichChoice = 0;
+		        else ++whichChoice;
+		      }","javascript:
+		      function initialize() {
+		        whichChoice = 0;
+		      }
+		      function touchTime(value,time) {
+		        if (whichChoice == 1) whichChoice = 0;
+		        else ++whichChoice;
+		      }"]
+		  }
+		  Shape {
+		    appearance Appearance {
+		      material Material {
+			diffuseColor 0 0 0
+		      }
+		    }
+		    geometry Box {
+		      size .8 .8 .2
+		    }
+		  }
+		]
+	      }
+	    ]
+	  }
+	]
+      }
+
+#
+# R2D2_Body i.e. cylindrical body
+#
+# the transform node puts R2D2_Body down by 2 relative to the head
+#
+	
+	DEF body Group {
+		children [
+			DEF TOS_body TouchSensor {}
+			DEF TS_body TimeSensor {
+				cycleInterval 1.5
+			}
+			Sound {
+				priority .9
+				minFront 100
+				minBack 100
+				maxFront 150
+				maxBack 150
+				source DEF S_body AudioClip {
+					url "../sounds/sentnc10.wav"
+				}
+			}
+			DEF OI_body OrientationInterpolator {
+				key [ 0.0, .25, .5, .75, 1.0]
+				keyValue [ 1 0  0 0, 1 0 0 .39, 1 0 0 0, 1 0 0 -.39, 1 0 0 0]
+			}
+			Transform {
+				translation 0 -2.5 0
+				children [
+						Shape {
+							appearance Appearance {
+								material Material {
+									diffuseColor 1 1 1
+								}
+							}
+							geometry Cylinder {
+								radius 2.5
+								height 5
+							}
+						}
+					]
+				}
+			Transform {
+				translation 0 -.1 0
+				children [
+					DEF blackRim Shape {
+						appearance Appearance {
+							material Material {
+								diffuseColor 0 0 0
+							}
+						}
+						geometry Cylinder {
+							radius 2.6
+							height .2
+						}
+					}
+				]
+			}
+			Transform {
+				translation 0 -5 0
+				children USE blackRim
+			}
+			]
+		}
+	]
+}
+]
+}
+####################################
+# level 1
+####################################
+Group {}
+
+    ]
+}
+]
+}
+}
+# r2d2 move
+ROUTE TOS_r2d2.touchTime TO TS_r2d2.startTime
+ROUTE TS_r2d2.fraction_changed TO PI_r2d2.set_fraction
+ROUTE PI_r2d2.value_changed TO r2d2.translation
+
+# r2d2 chat
+ROUTE TOS_r2d2.touchTime TO S_r2d2.startTime
+
+# r2d2 orientation change
+ROUTE OI_r2d2.value_changed TO r2d2.rotation
+ROUTE TOS_r2d2.touchTime TO TS2_r2d2.startTime
+ROUTE TS_r2d2.fraction_changed TO OI_r2d2.set_fraction
+
+# button animation sound
+ROUTE TOS_button.touchTime TO S_button.startTime
+
+# button animation
+ROUTE PI_button.value_changed TO button.translation
+ROUTE TOS_button.touchTime TO TS_button.startTime
+ROUTE TS_button.fraction_changed TO PI_button.set_fraction
+
+# button hologram
+ROUTE TOS_button.touchTime TO SCR_holo.touchTime
+ROUTE SCR_holo.whichChoice TO SW_holo.whichChoice
+
+# head animation sound
+ROUTE TOS_head.touchTime TO S_head.startTime
+
+# head animation
+ROUTE OI_head.value_changed TO head.rotation
+ROUTE TOS_head.touchTime TO TS_head.startTime
+ROUTE TS_head.fraction_changed TO OI_head.set_fraction
+
+# body animation sound
+ROUTE TOS_body.touchTime TO S_body.startTime
+
+# body animation
+ROUTE OI_body.value_changed TO r2d2_trunk.rotation
+ROUTE TOS_body.touchTime TO TS_body.startTime
+ROUTE TS_body.fraction_changed TO OI_body.set_fraction
+
+
+
+
+
+
+
+
+
+
+
+

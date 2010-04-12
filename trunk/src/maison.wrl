@@ -1,0 +1,27 @@
+#VRML V2.0 utf8
+
+PROTO Maison
+[
+field SFVec3f trans 0 0 0
+field SFNode points Coordinate {point [0 3 -6,-2 2 -6,-2 0 -6, 2 0 -6 ,2 2 -6 ,0 3 -9, -2 2 -9, -2 0 -9, 2 0 -9, 2 2 -9]}
+
+
+]
+
+{
+Transform {
+children Shape
+{geometry
+IndexedFaceSet {
+color Color{color[0 1 0, 0 0 1, 1 1 0, 1 1 1 , 1 0 0, .5 .5 .5 ]}
+coord IS points
+coordIndex [0 1 2 3 4 -1 9 8 7 6 5 -1 4 3 8 9 -1 6 7 2 1 -1 1 0 4 9 5 6 -1 7 8 3 2]
+colorPerVertex FALSE
+}
+}
+translation IS trans
+}
+}
+
+
+Maison {}
