@@ -163,7 +163,7 @@ ROUTE SAcheron.goal_changed	TO Acheron.position
 DEF Ceinture_asteroides_H Transform {
 	children [
 		Copy {
-		   copies 700
+		   copies 10
 		   center 0 0 0
 		   translation 1 0 0
 		   rotation 0 1 0 0.45
@@ -191,7 +191,7 @@ ROUTE Ceinture_asteroidesPi.value_changed TO Ceinture_asteroides_H.rotation
 DEF Ceinture_asteroides_B Transform {
 	children [
 		Copy {
-		   copies 700
+		   copies 10
 		   center 0 0 0
 		   translation 1 0 0
 		   rotation 0 1 0 0.45

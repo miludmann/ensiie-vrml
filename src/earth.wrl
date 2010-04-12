@@ -51,6 +51,14 @@ DEF M Transform {
 			radius 120.00
 		}
 		}
+		Transform {
+			scale .1 .1 .1
+			translation 0 99.5 0
+			rotation 0 0 1 0
+			children [
+				Inline { url "base.wrl" }
+			]
+		}
 ]
 }
 
