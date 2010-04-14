@@ -26,20 +26,55 @@ EXTERNPROTO Copy [
                    ] "../protos/CopyPROTO.wrl"
 
 
-DEF EarthTs TimeSensor {
-	cycleInterval 20
-	loop TRUE
+##
+# Gestion des obstacles
+##
+
+PROTO ObstaclePlanete [
+   exposedField SFVec3f position 0 0 0
+   exposedField SFFloat repulsion 4
+   field        SFFloat radius 0
+]
+{}
+
+
+DEF SObstacle Script {
+   eventIn  SFRotation set_pos_Theseus 
+   eventIn  SFRotation set_pos_Acheron
+   eventIn  SFRotation set_pos_Earth
+   eventIn  SFRotation set_pos_Erebus
+   eventIn  SFRotation set_pos_Antaeus
+
+   eventOut SFVec3f goal_changed_Acheron
+   eventOut SFVec3f goal_changed_Earth	
+   eventOut SFVec3f goal_changed_Erebus
+   eventOut SFVec3f goal_changed_Antaeus
+   eventOut SFVec3f goal_changed_Theseus
+
+   url ["javascript:
+      function set_pos_Acheron(rot) {
+		 goal_changed_Acheron = new SFVec3f(9000*Math.cos(rot.angle), 0, -(9000*Math.sin(rot.angle)));
+      }
+      function set_pos_Earth(rot) {
+		 goal_changed_Earth = new SFVec3f(3090*Math.cos(rot.angle), 0, -(3090*Math.sin(rot.angle)));
+      }
+      function set_pos_Erebus(rot) {
+		 goal_changed_Erebus = new SFVec3f(17750*Math.cos(rot.angle), 0, -(17750*Math.sin(rot.angle)));
+      }
+      function set_pos_Antaeus(rot) {
+		 goal_changed_Antaeus = new SFVec3f(23040*Math.cos(rot.angle), 0, -(23040*Math.sin(rot.angle)));
+      }
+      function set_pos_Theseus(rot) {
+		 goal_changed_Theseus = new SFVec3f(14290*Math.cos(rot.angle), 0, -(14290*Math.sin(rot.angle)));
+      }
+      "]
 }
 
-DEF AntaeusTs TimeSensor {
-	cycleInterval 1600
-	loop TRUE
-}
-
-DEF Ceinture_asteroidesTs TimeSensor {
-	cycleInterval 100
-	loop TRUE
-}
+##
+# Gestion de l'astre Exodus
+# Equivalent du Soleil de notre cher système solaire, il est l'élément central
+# de la scène, et ne se déplace donc pas.
+##
 
 PROTO ObstacleExodus [
    exposedField SFVec3f position 0 0 0
@@ -58,22 +93,51 @@ DEF _Exodus Transform {
 }
 DEF	Exodus ObstacleExodus { position 0 0 0 radius 200 repulsion 200000000 }
 
+##
+# Gestion de la planète Terre, seule corps céleste représentant d'une planète
+# réelle, du moins dans l'apparence.
+# Planète de petite taille, proche du soleil, à la révolution rapide, et
+# possédant une lune.
+# C'est dessus que se trouve la base spatiale où se meuvent d'autres objets
+# à une échelle très faible comparé au reste de la scène.
+##	 
+
+DEF EarthTs TimeSensor {
+	cycleInterval 20
+	loop TRUE
+}
+
 DEF Earth Transform {
 	translation 0 0 0
-	scale 1.5 1.5 1.5
+	scale 1 1 1
 			children [
 				Inline { url "earth.wrl" },
 				
 			]
 		}
 
-DEF EarthPi OrientationInterpolator {
+DEF EarthOi OrientationInterpolator {
 	key [ 0 .5 1 ]
-	keyValue [ 0 1 0 3.14, 0 1 0 6.28, 0 1 0 9.42,  ]
+	keyValue  [ 0 1 0 0, 0 1 0 3.14, 0 1 0 6.28,  ]
 }
 
-ROUTE EarthTs.fraction_changed TO EarthPi.set_fraction
-ROUTE EarthPi.value_changed TO Earth.rotation
+ROUTE EarthTs.fraction_changed TO EarthOi.set_fraction
+ROUTE EarthOi.value_changed TO Earth.rotation
+
+DEF	EarthObs ObstaclePlanete { position 3090 0 0 radius 100 repulsion 10000000 }
+
+ROUTE EarthOi.value_changed TO SObstacle.set_pos_Earth
+ROUTE SObstacle.goal_changed_Earth TO EarthObs.position
+
+##
+# Gestion de la planète Antaeus
+# Planète moyenne, bleue, la plus excentrée, et à la révolution lente
+##	   
+
+DEF AntaeusTs TimeSensor {
+	cycleInterval 1600
+	loop TRUE
+}
 
 DEF Antaeus Transform {
 	translation 0 0 0
@@ -84,25 +148,26 @@ DEF Antaeus Transform {
 			]
 		}
 
-DEF AntaeusPi OrientationInterpolator {
+DEF AntaeusOi OrientationInterpolator {
 	key [ 0 .5 1 ]
-	keyValue [ 0 1 0 3.14, 0 1 0 6.28, 0 1 0 9.42,  ]
+	keyValue  [ 0 1 0 0, 0 1 0 3.14, 0 1 0 6.28,  ]
 }
 
-ROUTE AntaeusTs.fraction_changed TO AntaeusPi.set_fraction
-ROUTE AntaeusPi.value_changed TO Antaeus.rotation
+ROUTE AntaeusTs.fraction_changed TO AntaeusOi.set_fraction
+ROUTE AntaeusOi.value_changed TO Antaeus.rotation
+
+DEF	AntaeusObs ObstaclePlanete { position 23040 0 0 radius 1000 repulsion 20000000 }
+
+ROUTE AntaeusOi.value_changed TO SObstacle.set_pos_Antaeus
+ROUTE SObstacle.goal_changed_Antaeus TO AntaeusObs.position
 
 
+##
+# Gestion de la planète Acheron
+# Planète massive, à la surface brunâtre
+##
 
-PROTO ObstacleAcheron [
-   exposedField SFVec3f position 0 0 0
-   exposedField SFRotation rotation 0 0 0 0
-   exposedField SFFloat repulsion 4
-   field        SFFloat radius 0
-]
-{
-}
-DEF _Acheron Transform {
+DEF Acheron Transform {
 	translation 0 0 0
 	scale 1 1 1
 			children [
@@ -118,52 +183,34 @@ DEF AcheronTs TimeSensor {
 
 DEF AcheronOi OrientationInterpolator {
 	key [ 0 .5 1 ]
-	keyValue [ 0 1 0 3.14, 0 1 0 6.28, 0 1 0 9.42,  ]
+	keyValue [ 0 1 0 0, 0 1 0 3.14, 0 1 0 6.28,  ]
 }
 
 ROUTE AcheronTs.fraction_changed TO AcheronOi.set_fraction
-ROUTE AcheronOi.value_changed TO _Acheron.rotation
+ROUTE AcheronOi.value_changed TO Acheron.rotation
 
-DEF	Acheron ObstacleAcheron { position 9000 0 0 radius 1000 repulsion 200000000 }
+DEF	AcheronObs ObstaclePlanete { position 9000 0 0 radius 1000 repulsion 200000000 }
+
+ROUTE AcheronOi.value_changed TO SObstacle.set_pos_Acheron
+ROUTE SObstacle.goal_changed_Acheron TO AcheronObs.position
+
+##
+# Gestion de la ceinture d'astéroïdes
+# Si le navigateur a tendance à être trop ralenti et les déplacement saccadés, il peut
+# alors être nécessaire de diminuer le nombre d'astéroïdes présents.
+# Pour cela, changer les deux champs "copies" qui détermine le nombre des corps rocheux.
+##
 
 
-DEF SAcheron Script { 
-   eventIn  SFRotation set_pos
-   field    SFNode  g USE Acheron
-   eventOut SFVec3f goal_changed
-   url ["javascript:
-      function set_pos(rot) {
-		 //parent.vrmlframe.document.write('bla');
-		 /* 
-		 if(rot.angle > 6.28)
-		 {
-		 goal_changed = new SFVec3f(9000*Math.cos(rot.angle), 0, (-1)*9000*Math.sin(rot.angle));
-		 } else {
-		 goal_changed = new SFVec3f(9000*Math.cos(rot.angle), 0, (1)*9000*Math.sin(rot.angle));
-		 }
-		  */
-		 goal_changed = new SFVec3f(9000*Math.cos(rot.angle), 0, (9000*Math.sin(rot.angle)));
-
-      }
-      "]
+DEF Ceinture_asteroidesTs TimeSensor {
+	cycleInterval 100
+	loop TRUE
 }
-
-ROUTE AcheronOi.value_changed TO SAcheron.set_pos
-ROUTE SAcheron.goal_changed	TO Acheron.position
-
-
-#ROUTE TIME.time TO A.updateRequest
-#ROUTE PS.translation_changed TO GOAL.set_translation
-#ROUTE PS.translation_changed TO S.set_pos
-#ROUTE S.goal_changed TO A.set_goal
-
-
-
 
 DEF Ceinture_asteroides_H Transform {
 	children [
 		Copy {
-		   copies 10
+		   copies 300
 		   center 0 0 0
 		   translation 1 0 0
 		   rotation 0 1 0 0.45
@@ -182,7 +229,7 @@ DEF Ceinture_asteroides_H Transform {
 
 DEF Ceinture_asteroidesPi OrientationInterpolator {
 	key [ 0 .5 1 ]
-	keyValue [ 0 1 0 3.14, 0 1 0 6.28, 0 1 0 9.42,  ]
+	keyValue  [ 0 1 0 0, 0 1 0 3.14, 0 1 0 6.28,  ]
 }
 
 ROUTE Ceinture_asteroidesTs.fraction_changed TO Ceinture_asteroidesPi.set_fraction
@@ -191,7 +238,7 @@ ROUTE Ceinture_asteroidesPi.value_changed TO Ceinture_asteroides_H.rotation
 DEF Ceinture_asteroides_B Transform {
 	children [
 		Copy {
-		   copies 10
+		   copies 300
 		   center 0 0 0
 		   translation 1 0 0
 		   rotation 0 1 0 0.45
@@ -211,6 +258,11 @@ DEF Ceinture_asteroides_B Transform {
 
 ROUTE Ceinture_asteroidesPi.value_changed TO Ceinture_asteroides_B.rotation
 
+##
+# Gestion de la planète Theseus
+# Planète moyenne, à la surface jaune, et possèdant des anneaux elliptiques
+##
+
 DEF TheseusTs TimeSensor {
 	cycleInterval 300
 	loop TRUE
@@ -218,22 +270,32 @@ DEF TheseusTs TimeSensor {
 
 DEF Theseus Transform {
 	translation 0 0 0
-	scale 0.9 0.9 0.9
+	scale 1 1 1
 			children [
 				Inline { url "theseus.wrl" },
 				
 			]
 		}
 
-DEF TheseusPi OrientationInterpolator {
+DEF TheseusOi OrientationInterpolator {
 	key [ 0 .5 1 ]
-	keyValue [ 0 1 0 3.14, 0 1 0 6.28, 0 1 0 9.42,  ]
+	keyValue  [ 0 1 0 0, 0 1 0 3.14, 0 1 0 6.28,  ]
 }
 
-ROUTE TheseusTs.fraction_changed TO TheseusPi.set_fraction
-ROUTE TheseusPi.value_changed TO Theseus.rotation
+ROUTE TheseusTs.fraction_changed TO TheseusOi.set_fraction
+ROUTE TheseusOi.value_changed TO Theseus.rotation
 
+DEF	TheseusObs ObstaclePlanete { position 14290 0 0 radius 1000 repulsion 115000000 }
 
+ROUTE TheseusOi.value_changed TO SObstacle.set_pos_Theseus
+ROUTE SObstacle.goal_changed_Theseus TO TheseusObs.position
+
+##
+# Gestion de la planète Erebus
+# Planète de taille petite voire moyenne, verte
+# Son cercle de révolution à la particularité d'être oblique par rapport
+# au plan classique du système
+##
 
 DEF ErebusTs TimeSensor {
 	cycleInterval 970
@@ -249,15 +311,18 @@ DEF Erebus Transform {
 			]
 		}
 
-DEF ErebusPi OrientationInterpolator {
+DEF ErebusOi OrientationInterpolator {
 	key [ 0 .5 1 ]
-	keyValue [ 0 0 1 3.14, 0 0 1 6.28, 0 0 1 9.42,  ]
+	keyValue  [ 0 1 0 0, 0 1 0 3.14, 0 1 0 6.28,  ]
 }
 
-ROUTE ErebusTs.fraction_changed TO ErebusPi.set_fraction
-ROUTE ErebusPi.value_changed TO Erebus.rotation
+ROUTE ErebusTs.fraction_changed TO ErebusOi.set_fraction
+ROUTE ErebusOi.value_changed TO Erebus.rotation
 
+DEF	ErebusObs ObstaclePlanete { position 17750 0 0 radius 1000 repulsion 200000000 }
 
+ROUTE ErebusOi.value_changed TO SObstacle.set_pos_Erebus
+ROUTE SObstacle.goal_changed_Erebus TO ErebusObs.position
 
 ##################################################################################################
 # Traitement du vaisseau déplaçable et de ses collisions
@@ -280,7 +345,7 @@ PROTO Obstacle [
    }
 }
 
-# Cible déplaçable à atteindre
+# Cible déplaçable à atteindre par le vaisseau
 Transform {
    rotation 1 0 0 -1.57
    children [ ## in here its the XY plane, to match PlaneSensor
@@ -321,7 +386,7 @@ Transform {
 Transform {
    translation 0 -1 0
    rotation 0 0 0 -1.57
-   children [ ## in here its the XY plane, to match PlaneSensor
+   children [ 
       DEF PS PlaneSensor {}
       Shape {
          appearance Appearance {
@@ -339,7 +404,11 @@ DEF A Avoidance {
    speed    1200
    obstacles [
       USE Exodus
-	  USE Acheron
+	  USE AcheronObs
+	  USE EarthObs
+	  USE AntaeusObs
+	  USE ErebusObs
+	  USE TheseusObs
    ]
    children  [ 
 	   Transform {

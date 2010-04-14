@@ -25,7 +25,7 @@ DEF M Transform {
 			}
 			geometry Sphere {
 			
-				radius 400.00
+				radius 500.00
 			}
 			}
 			Shape {
@@ -39,7 +39,7 @@ DEF M Transform {
 			}
 			geometry Sphere {
 	
-				radius 600.00
+				radius 680.00
 			}
 			}
 ]
