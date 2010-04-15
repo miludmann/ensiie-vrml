@@ -351,17 +351,17 @@ DEF Fleet Transform {
 					orientation 0 -.5 -.85 -1.57
 					description "Imperial destroyers"
 				}
-				Inline { url "../idees/destroyr.wrl" },
+				Inline { url "destroyer.wrl" },
 				Transform {
 					translation	50 100 0
 					children [
-						Inline { url "../idees/destroyr.wrl" },
+						Inline { url "destroyer.wrl" },
 					]
 				}
 				Transform {
 					translation	-50 100 0
 					children [
-						Inline { url "../idees/destroyr.wrl" },
+						Inline { url "destroyer.wrl" },
 					]
 				}
 				Sound {
@@ -393,7 +393,7 @@ DEF Fleet2 Transform {
 		}
 	}
 		DEF Fleet2_base Transform {
-			translation 4500 1000 -7794
+			translation 4500 1500 -7794
 			rotation 0 1 0 1.57
 			scale 30 30 30	
 			children [
@@ -403,17 +403,17 @@ DEF Fleet2 Transform {
 					description "X-Wings"
 				}
 			   
-				Inline { url "../idees/wing.wrl" },
+				Inline { url "wing.wrl" },
 				Transform {
 					translation	0 -10 5
 					children [
-						Inline { url "../idees/wing.wrl" },
+						Inline { url "wing.wrl" },
 					]
 				}
 				Transform {
 					translation	0 -10 -5
 					children [
-						Inline { url "../idees/wing.wrl" },
+						Inline { url "wing.wrl" },
 					]
 				}
 			]
