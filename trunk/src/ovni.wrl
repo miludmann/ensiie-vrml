@@ -84,8 +84,8 @@ Shape {
 }
 
 Sound {
-			maxFront 250
-			maxBack 250
+			maxFront 200
+			maxBack 200
 			location 0 0 0
 			
 source AudioClip { startTime 1

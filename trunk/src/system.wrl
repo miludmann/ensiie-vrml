@@ -333,38 +333,116 @@ DEF FleetTs TimeSensor {
 	loop TRUE
 }
 
+DEF Fleet2Ts TimeSensor {
+	cycleInterval 25
+	loop TRUE
+}
+
 DEF Fleet Transform {
-	rotation 0 0 0 0
-	translation	0 0 0
-	center 0 0 0
 	children [
 
 		DEF Fleet_base Transform {
 			translation 9000 1000 0
 			rotation 1 0 0 -1.57
-			scale 10 10 10	
+			scale 7 7 7	
 			children [
+				Viewpoint {
+					position 100 225 165
+					orientation 0 -.5 -.85 -1.57
+					description "Imperial destroyers"
+				}
 				Inline { url "../idees/destroyr.wrl" },
-			]
+				Transform {
+					translation	50 100 0
+					children [
+						Inline { url "../idees/destroyr.wrl" },
+					]
+				}
+				Transform {
+					translation	-50 100 0
+					children [
+						Inline { url "../idees/destroyr.wrl" },
+					]
+				}
+				Sound {
+				maxFront 200
+				maxBack 200
+				location 100 225 165
+			
+				source AudioClip { startTime 1
+					stopTime 0
+                 	  url  "../sounds/tie-fighter-fly-by2.wav" 
+					loop TRUE
+				}
+
 		}
-				
-	]
-}
+			]
+}]}
+
+DEF Fleet2 Transform {
+
+	children [
+
+	Shape {
+		  appearance Appearance {
+    		material Material {
+	    		diffuseColor	.8 .2 .5
+	    		specularColor	.5 .5 .5
+	    		shininess		0.2
+    		}
+		}
+	}
+		DEF Fleet2_base Transform {
+			translation 4500 1000 -7794
+			rotation 0 1 0 1.57
+			scale 30 30 30	
+			children [
+				Viewpoint {
+					position 20 0 0
+					orientation 0 .5 .15 1.57
+					description "X-Wings"
+				}
+			   
+				Inline { url "../idees/wing.wrl" },
+				Transform {
+					translation	0 -10 5
+					children [
+						Inline { url "../idees/wing.wrl" },
+					]
+				}
+				Transform {
+					translation	0 -10 -5
+					children [
+						Inline { url "../idees/wing.wrl" },
+					]
+				}
+			]
+}]}
+
 
 DEF FleetOi OrientationInterpolator {
 	key [ 0 .5 1 ]
 	keyValue  [ 0 1 0 0, 0 1 0 -3.14, 0 1 0 -6.28,  ]
 }
 
-DEF FleetScript Script { ## handle value massaging for moving target over floor
+DEF Fleet2Oi OrientationInterpolator {
+	key [ 0 .5 1 ]
+	keyValue  [ 0 1 0 0, 0 1 0 -3.14, 0 1 0 -6.28,  ]
+}
+
+DEF FleetScript Script { 
    eventIn  SFRotation set_pos
+   eventIn  SFRotation set_pos2
    field    SFNode  fleet USE Fleet
    field    SFNode	fleet_base USE Fleet_base
+   field    SFNode  fleet2 USE Fleet2
+   field    SFNode	fleet2_base USE Fleet2_base
    field    SFNode  p1 USE Acheron
    field	SFNode  p2 USE Theseus
    field	SFFloat	dest 2
    field	SFFloat	wait 0
-   eventOut SFVec3f goal_changed	
+   field	SFFloat	dest2 2
+   field	SFFloat	wait2 0	
    url ["javascript:
 
 	  function set_pos(rot) {
@@ -378,12 +456,12 @@ DEF FleetScript Script { ## handle value massaging for moving target over floor
 			{ // On est au niveau de la planète de destination (la plus extérieure, p2)
 				if((ap2 + af) > 6.25 && (ap2 + af) < 6.31 )
 				{ // Le vaisseau et la planète de destination sont à la même position
-					if(wait >= 3){
+					if(wait >= 2){
 						fleet.scale = new SFVec3f(1, 1, 1);
 						dest = 1;
 						wait = 0;
 					} else {
-						fleet.scale = new SFVec3f(0, 0, 0);
+						fleet.scale = new SFVec3f(0, 0, 0); 
 						wait = wait + 1;
 					}
 				}
@@ -396,11 +474,64 @@ DEF FleetScript Script { ## handle value massaging for moving target over floor
 			{ // On est au niveau de la planète de destination (la plus intérieure, p1)
 				if((ap1 + af) > 6.25 && (ap1 + af) < 6.31 )
 				{  // Le vaisseau et la planète de destination sont à la même position
-					dest = 2;
+					if(wait >= 2){
+						fleet.scale = new SFVec3f(1, 1, 1);
+						dest = 2;
+						wait = 0;
+					} else {
+						fleet.scale = new SFVec3f(0, 0, 0);
+						wait = wait + 1;
+					}
 				}
 			 } else {
 				// On rapproche le vaisseau de la planète de destination
 				fleet_base.translation =  new SFVec3f(current_pos.x -5000/100, current_pos.y + 125/100, 0);			 
+			 }
+		 }
+
+	 }
+
+	 	  function set_pos2(rot) {
+		  var ap1 = p1.rotation.angle;
+		  var ap2 = p2.rotation.angle;
+		  var af2 = fleet2.rotation.angle;
+		  var current_pos2 = fleet2_base.translation;
+
+		  if(dest2 == 2){
+			if(current_pos2.x >= 14000)
+			{ // On est au niveau de la planète de destination (la plus extérieure, p2)
+				if((ap2 + af2) > 6.25 && (ap2 + af2) < 6.31 )
+				{ // Le vaisseau et la planète de destination sont à la même position
+					if(wait2 >= 4){
+						fleet2.scale = new SFVec3f(1, 1, 1);
+						dest2 = 1;
+						wait2 = 0;
+					} else {
+						fleet2.scale = new SFVec3f(0, 0, 0); 
+						wait2 = wait2 + 1;
+					}
+				}
+			 } else {
+				 // On rapproche le vaisseau de la planète de destination
+				fleet2_base.translation =  new SFVec3f(current_pos2.x +5000/100, current_pos2.y - 125/100, 0);			 
+			 }	
+		  } else {
+			if(current_pos2.x <= 9000)
+			{ // On est au niveau de la planète de destination (la plus intérieure, p1)
+				if((ap1 + af2) > 6.25 && (ap1 + af2) < 6.31 )
+				{  // Le vaisseau et la planète de destination sont à la même position
+					if(wait2 >= 4){
+						fleet2.scale = new SFVec3f(1, 1, 1);
+						dest2 = 2;
+						wait2 = 0;
+					} else {
+						fleet2.scale = new SFVec3f(0, 0, 0);
+						wait2 = wait2 + 1;
+					}
+				}
+			 } else {
+				// On rapproche le vaisseau de la planète de destination
+				fleet2_base.translation =  new SFVec3f(current_pos2.x -5000/100, current_pos2.y + 125/100, 0);			 
 			 }
 		 }
 	 }
@@ -410,9 +541,13 @@ DEF FleetScript Script { ## handle value massaging for moving target over floor
 
 ROUTE FleetTs.fraction_changed TO FleetOi.set_fraction
 ROUTE FleetOi.value_changed TO Fleet.rotation
-
 ROUTE FleetOi.value_changed TO FleetScript.set_pos
-ROUTE FleetScript.goal_changed TO Fleet.translation
+
+ROUTE Fleet2Ts.fraction_changed TO Fleet2Oi.set_fraction
+ROUTE Fleet2Oi.value_changed TO Fleet2.rotation
+ROUTE Fleet2Oi.value_changed TO FleetScript.set_pos2
+
+
 
 ##################################################################################################
 # Traitement du vaisseau déplaçable et de ses collisions
