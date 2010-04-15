@@ -1,0 +1,472 @@
+#VRML V2.0 utf8
+
+
+EXTERNPROTO Avoidance[
+eventIn SFTime updateRequest
+eventIn SFVec3f set_goal
+eventIn SFString set_state
+eventIn MFNode set_obstacles
+field SFVec3f goal
+field SFFloat goalPriority
+field SFFloat speed
+field SFString state
+field MFNode obstacles
+exposedField SFVec3f position
+exposedField MFNode children
+]"../protos/AvoidObstaclesPROTO.wrl"
+
+EXTERNPROTO Copy[
+field SFInt32 copies
+field SFVec3f center
+field SFVec3f translation
+field SFVec3f scale
+field SFRotation scaleOrientation
+field SFRotation rotation
+field MFNode children
+]"../protos/CopyPROTO.wrl"
+
+
+
+
+
+
+PROTO ObstaclePlanete[
+exposedField SFVec3f position 0 0 0
+exposedField SFFloat repulsion 4
+field SFFloat radius 0
+]
+{}
+
+
+DEF SObstacle Script{
+eventIn SFRotation set_pos_Theseus
+eventIn SFRotation set_pos_Acheron
+eventIn SFRotation set_pos_Earth
+eventIn SFRotation set_pos_Erebus
+eventIn SFRotation set_pos_Antaeus
+
+eventOut SFVec3f goal_changed_Acheron
+eventOut SFVec3f goal_changed_Earth
+eventOut SFVec3f goal_changed_Erebus
+eventOut SFVec3f goal_changed_Antaeus
+eventOut SFVec3f goal_changed_Theseus
+
+url["javascript:
+function set_pos_Acheron(rot){
+goal_changed_Acheron = new SFVec3f(9000*Math.cos(rot.angle),0,-(9000*Math.sin(rot.angle)));
+}
+function set_pos_Earth(rot){
+goal_changed_Earth = new SFVec3f(3090*Math.cos(rot.angle),0,-(3090*Math.sin(rot.angle)));
+}
+function set_pos_Erebus(rot){
+goal_changed_Erebus = new SFVec3f(17750*Math.cos(rot.angle),0,-(17750*Math.sin(rot.angle)));
+}
+function set_pos_Antaeus(rot){
+goal_changed_Antaeus = new SFVec3f(23040*Math.cos(rot.angle),0,-(23040*Math.sin(rot.angle)));
+}
+function set_pos_Theseus(rot){
+goal_changed_Theseus = new SFVec3f(14290*Math.cos(rot.angle),0,-(14290*Math.sin(rot.angle)));
+}
+"]
+}
+
+
+
+
+
+
+
+PROTO ObstacleExodus[
+exposedField SFVec3f position 0 0 0
+exposedField SFFloat repulsion 4
+field SFFloat radius 0
+]
+{
+DEF _Exodus Transform{
+translation 0 0 0
+scale 5 5 5
+children[
+Inline{url "exodus.wrl"},
+
+]
+}
+}
+DEF	Exodus ObstacleExodus{position 0 0 0 radius 200 repulsion 200000000}
+
+
+
+
+
+
+
+
+
+
+DEF EarthTs TimeSensor{
+cycleInterval 20
+loop TRUE
+}
+
+DEF Earth Transform{
+translation 0 0 0
+scale 1 1 1
+children[
+Inline{url "earth.wrl"},
+
+]
+}
+
+DEF EarthOi OrientationInterpolator{
+key[0 .5 1]
+keyValue[0 1 0 0,0 1 0 3.14,0 1 0 6.28,]
+}
+
+ROUTE EarthTs.fraction_changed TO EarthOi.set_fraction
+ROUTE EarthOi.value_changed TO Earth.rotation
+
+DEF	EarthObs ObstaclePlanete{position 3090 0 0 radius 100 repulsion 10000000}
+
+ROUTE EarthOi.value_changed TO SObstacle.set_pos_Earth
+ROUTE SObstacle.goal_changed_Earth TO EarthObs.position
+
+
+
+
+
+
+DEF AntaeusTs TimeSensor{
+cycleInterval 1600
+loop TRUE
+}
+
+DEF Antaeus Transform{
+translation 0 0 0
+scale 1 1 1
+children[
+Inline{url "antaeus.wrl"},
+
+]
+}
+
+DEF AntaeusOi OrientationInterpolator{
+key[0 .5 1]
+keyValue[0 1 0 0,0 1 0 3.14,0 1 0 6.28,]
+}
+
+ROUTE AntaeusTs.fraction_changed TO AntaeusOi.set_fraction
+ROUTE AntaeusOi.value_changed TO Antaeus.rotation
+
+DEF	AntaeusObs ObstaclePlanete{position 23040 0 0 radius 1000 repulsion 20000000}
+
+ROUTE AntaeusOi.value_changed TO SObstacle.set_pos_Antaeus
+ROUTE SObstacle.goal_changed_Antaeus TO AntaeusObs.position
+
+
+
+
+
+
+
+DEF Acheron Transform{
+translation 0 0 0
+scale 1 1 1
+children[
+Inline{url "acheron.wrl"},
+
+]
+}
+
+DEF AcheronTs TimeSensor{
+cycleInterval 120
+loop TRUE
+}
+
+DEF AcheronOi OrientationInterpolator{
+key[0 .5 1]
+keyValue[0 1 0 0,0 1 0 3.14,0 1 0 6.28,]
+}
+
+ROUTE AcheronTs.fraction_changed TO AcheronOi.set_fraction
+ROUTE AcheronOi.value_changed TO Acheron.rotation
+
+DEF	AcheronObs ObstaclePlanete{position 9000 0 0 radius 1000 repulsion 200000000}
+
+ROUTE AcheronOi.value_changed TO SObstacle.set_pos_Acheron
+ROUTE SObstacle.goal_changed_Acheron TO AcheronObs.position
+
+
+
+
+
+
+
+
+
+DEF Ceinture_asteroidesTs TimeSensor{
+cycleInterval 100
+loop TRUE
+}
+
+DEF Ceinture_asteroides_H Transform{
+children[
+Copy{
+copies 300
+center 0 0 0
+translation 1 0 0
+rotation 0 1 0 0.45
+scale 1 1 1
+children[
+Transform{
+translation -30 50 -10
+children[
+Inline{url["asteroide.wrl"]}
+]
+}
+]
+}
+]
+}
+
+DEF Ceinture_asteroidesPi OrientationInterpolator{
+key[0 .5 1]
+keyValue[0 1 0 0,0 1 0 3.14,0 1 0 6.28,]
+}
+
+ROUTE Ceinture_asteroidesTs.fraction_changed TO Ceinture_asteroidesPi.set_fraction
+ROUTE Ceinture_asteroidesPi.value_changed TO Ceinture_asteroides_H.rotation
+
+DEF Ceinture_asteroides_B Transform{
+children[
+Copy{
+copies 300
+center 0 0 0
+translation 1 0 0
+rotation 0 1 0 0.45
+scale 1 1 1
+children[
+Transform{
+translation 0 -100 0
+rotation 0 1 0 0.3
+children[
+Inline{url["asteroide.wrl"]}
+]
+}
+]
+}
+]
+}
+
+ROUTE Ceinture_asteroidesPi.value_changed TO Ceinture_asteroides_B.rotation
+
+
+
+
+
+
+DEF TheseusTs TimeSensor{
+cycleInterval 300
+loop TRUE
+}
+
+DEF Theseus Transform{
+translation 0 0 0
+scale 1 1 1
+children[
+Inline{url "theseus.wrl"},
+
+]
+}
+
+DEF TheseusOi OrientationInterpolator{
+key[0 .5 1]
+keyValue[0 1 0 0,0 1 0 3.14,0 1 0 6.28,]
+}
+
+ROUTE TheseusTs.fraction_changed TO TheseusOi.set_fraction
+ROUTE TheseusOi.value_changed TO Theseus.rotation
+
+DEF	TheseusObs ObstaclePlanete{position 14290 0 0 radius 1000 repulsion 115000000}
+
+ROUTE TheseusOi.value_changed TO SObstacle.set_pos_Theseus
+ROUTE SObstacle.goal_changed_Theseus TO TheseusObs.position
+
+
+
+
+
+
+
+
+DEF ErebusTs TimeSensor{
+cycleInterval 970
+loop TRUE
+}
+
+DEF Erebus Transform{
+translation 0 0 0
+scale 1 1 1
+children[
+Inline{url "erebus.wrl"},
+
+]
+}
+
+DEF ErebusOi OrientationInterpolator{
+key[0 .5 1]
+keyValue[0 1 0 0,0 1 0 3.14,0 1 0 6.28,]
+}
+
+ROUTE ErebusTs.fraction_changed TO ErebusOi.set_fraction
+ROUTE ErebusOi.value_changed TO Erebus.rotation
+
+DEF	ErebusObs ObstaclePlanete{position 17750 0 0 radius 1000 repulsion 200000000}
+
+ROUTE ErebusOi.value_changed TO SObstacle.set_pos_Erebus
+ROUTE SObstacle.goal_changed_Erebus TO ErebusObs.position
+
+
+
+
+
+DEF FleetTs TimeSensor{
+cycleInterval 970
+loop TRUE
+}
+
+DEF Fleet Transform{
+translation 8500 0 0
+scale 100 100 100
+children[
+Inline{url "../idees/destroyr.wrl"},
+
+]
+}
+
+DEF FleetOi OrientationInterpolator{
+key[0 .5 1]
+keyValue[0 1 0 0,0 1 0 3.14,0 1 0 6.28,]
+}
+
+
+
+PROTO Obstacle[
+exposedField SFVec3f position 0 0 0
+exposedField SFFloat repulsion 4
+field SFFloat radius 4
+]
+{
+Transform{
+translation IS position
+children[
+Shape{
+appearance Appearance{
+material Material{emissiveColor 1 0 0 transparency .6}
+}
+geometry Sphere{radius IS radius}
+}
+]
+}
+}
+
+
+Transform{
+rotation 1 0 0 -1.57
+children[
+DEF GOAL Transform{
+translation -5000 0 0
+children[
+Transform{
+translation 0 0 -.25
+scale 250 250 1
+children[
+DEF CORNER Shape{
+geometry IndexedLineSet{
+coord Coordinate{point[-.5 -.25 0,-.5 -.5 0,-.25 -.5 0]}
+coordIndex[0 1 2 -1]
+color Color{color[0 1 .4]}
+colorIndex[0 0 0 -1]
+}
+}
+Transform{
+rotation 0 0 1 1.57
+children[USE CORNER]
+}
+Transform{
+rotation 0 0 1 -1.57
+children[USE CORNER]
+}
+Transform{
+rotation 0 0 1 3.1415
+children[USE CORNER]
+}
+]
+}
+]
+}
+]
+}
+
+Transform{
+translation 0 -1 0
+rotation 0 0 0 -1.57
+children[
+DEF PS PlaneSensor{}
+Shape{
+appearance Appearance{
+material Material{diffuseColor .4 .4 .4
+transparency 0.95}
+}
+geometry Cylinder{height 1 radius 13000}
+}
+]
+}
+
+DEF A Avoidance{
+position 5000 0 0
+goal -5000 0 0
+speed 1200
+obstacles[
+USE Exodus
+USE AcheronObs
+USE EarthObs
+USE AntaeusObs
+USE ErebusObs
+USE TheseusObs
+]
+children[
+Transform{
+scale 100 100 100
+rotation	0 0 0 -1.57
+children[
+Inline{url["ovni.wrl"]}
+]
+}
+
+]
+}
+
+DEF S Script{
+eventIn SFVec3f set_pos
+field SFNode g USE GOAL
+field SFNode p USE PS
+field SFVec3f offset 0 0 0
+eventOut SFVec3f goal_changed
+url["javascript:
+function set_pos(pos){
+var mv = offset.add(pos);
+goal_changed = new SFVec3f(mv.x,0,-mv.y);
+}
+function initialize(){
+p.set_offset = g.translation;
+set_pos(g.translation);
+}
+"]
+}
+
+DEF TIME TimeSensor{cycleInterval 10 loop TRUE}
+
+ROUTE TIME.time TO A.updateRequest
+ROUTE PS.translation_changed TO GOAL.set_translation
+ROUTE PS.translation_changed TO S.set_pos
+ROUTE S.goal_changed TO A.set_goal
+
