@@ -1,12 +1,12 @@
-#VRML V2.0 utf8  (Created By ISB 2.1)
+#VRML V2.0 utf8  
 
 
 DirectionalLight {
 	direction -0.2 -0.6 -0.8
 }
-Group { # children: 2
+Group {
 	children [
-		DEF Object Transform { # children: 1
+		DEF Object Transform { 
 			rotation 0 0 1 0
 			scaleOrientation 0 0 1 0
 			children [
@@ -678,5 +678,4 @@ Group { # children: 2
 		}
 	]
 }
-# Faces total: 134
-# Facesets total: 1
+

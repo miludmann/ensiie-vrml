@@ -317,7 +317,7 @@ DEF r2d2_trunk Transform {
 					fontStyle FontStyle {
 					  justify ["MIDDLE","MIDDLE"]
 					}
-					string "hello world"
+					string "Projet VRML 2010"
 				      }
 				    }
 				  ]

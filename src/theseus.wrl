@@ -8,7 +8,7 @@ Viewpoint {
 }
 
 DEF	Theseus Transform {
-	translation 14290 0 0
+	translation 14000 0 0
 	children [
 		Transform {
 			translation 0 50 0

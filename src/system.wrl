@@ -65,7 +65,7 @@ DEF SObstacle Script {
 		 goal_changed_Antaeus = new SFVec3f(23040*Math.cos(rot.angle), 0, -(23040*Math.sin(rot.angle)));
       }
       function set_pos_Theseus(rot) {
-		 goal_changed_Theseus = new SFVec3f(14290*Math.cos(rot.angle), 0, -(14290*Math.sin(rot.angle)));
+		 goal_changed_Theseus = new SFVec3f(14000*Math.cos(rot.angle), 0, -(14000*Math.sin(rot.angle)));
       }
       "]
 }
@@ -285,7 +285,7 @@ DEF TheseusOi OrientationInterpolator {
 ROUTE TheseusTs.fraction_changed TO TheseusOi.set_fraction
 ROUTE TheseusOi.value_changed TO Theseus.rotation
 
-DEF	TheseusObs ObstaclePlanete { position 14290 0 0 radius 1000 repulsion 115000000 }
+DEF	TheseusObs ObstaclePlanete { position 14000 0 0 radius 1000 repulsion 115000000 }
 
 ROUTE TheseusOi.value_changed TO SObstacle.set_pos_Theseus
 ROUTE SObstacle.goal_changed_Theseus TO TheseusObs.position
@@ -323,6 +323,96 @@ DEF	ErebusObs ObstaclePlanete { position 17750 0 0 radius 1000 repulsion 2000000
 
 ROUTE ErebusOi.value_changed TO SObstacle.set_pos_Erebus
 ROUTE SObstacle.goal_changed_Erebus TO ErebusObs.position
+
+##
+# Gestion des vaisseaux se déplaçant de planète en planète
+##
+
+DEF FleetTs TimeSensor {
+	cycleInterval 15
+	loop TRUE
+}
+
+DEF Fleet Transform {
+	rotation 0 0 0 0
+	translation	0 0 0
+	center 0 0 0
+	children [
+
+		DEF Fleet_base Transform {
+			translation 9000 1000 0
+			rotation 1 0 0 -1.57
+			scale 10 10 10	
+			children [
+				Inline { url "../idees/destroyr.wrl" },
+			]
+		}
+				
+	]
+}
+
+DEF FleetOi OrientationInterpolator {
+	key [ 0 .5 1 ]
+	keyValue  [ 0 1 0 0, 0 1 0 -3.14, 0 1 0 -6.28,  ]
+}
+
+DEF FleetScript Script { ## handle value massaging for moving target over floor
+   eventIn  SFRotation set_pos
+   field    SFNode  fleet USE Fleet
+   field    SFNode	fleet_base USE Fleet_base
+   field    SFNode  p1 USE Acheron
+   field	SFNode  p2 USE Theseus
+   field	SFFloat	dest 2
+   field	SFFloat	wait 0
+   eventOut SFVec3f goal_changed	
+   url ["javascript:
+
+	  function set_pos(rot) {
+		  var ap1 = p1.rotation.angle;
+		  var ap2 = p2.rotation.angle;
+		  var af = fleet.rotation.angle;
+		  var current_pos = fleet_base.translation;
+
+		  if(dest == 2){
+			if(current_pos.x >= 14000)
+			{ // On est au niveau de la planète de destination (la plus extérieure, p2)
+				if((ap2 + af) > 6.25 && (ap2 + af) < 6.31 )
+				{ // Le vaisseau et la planète de destination sont à la même position
+					if(wait >= 3){
+						fleet.scale = new SFVec3f(1, 1, 1);
+						dest = 1;
+						wait = 0;
+					} else {
+						fleet.scale = new SFVec3f(0, 0, 0);
+						wait = wait + 1;
+					}
+				}
+			 } else {
+				 // On rapproche le vaisseau de la planète de destination
+				fleet_base.translation =  new SFVec3f(current_pos.x +5000/100, current_pos.y - 125/100, 0);			 
+			 }	
+		  } else {
+			if(current_pos.x <= 9000)
+			{ // On est au niveau de la planète de destination (la plus intérieure, p1)
+				if((ap1 + af) > 6.25 && (ap1 + af) < 6.31 )
+				{  // Le vaisseau et la planète de destination sont à la même position
+					dest = 2;
+				}
+			 } else {
+				// On rapproche le vaisseau de la planète de destination
+				fleet_base.translation =  new SFVec3f(current_pos.x -5000/100, current_pos.y + 125/100, 0);			 
+			 }
+		 }
+	 }
+
+      "]
+}
+
+ROUTE FleetTs.fraction_changed TO FleetOi.set_fraction
+ROUTE FleetOi.value_changed TO Fleet.rotation
+
+ROUTE FleetOi.value_changed TO FleetScript.set_pos
+ROUTE FleetScript.goal_changed TO Fleet.translation
 
 ##################################################################################################
 # Traitement du vaisseau déplaçable et de ses collisions
