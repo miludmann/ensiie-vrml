@@ -4,7 +4,7 @@
 ## Scene Setup
 NavigationInfo {
 	avatarSize [ 0.25, 1.6, 0.75 ]
-	type "FLY"
+	#type "FLY"
 	headlight TRUE
 	speed 50.00
 }
