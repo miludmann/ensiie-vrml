@@ -393,7 +393,7 @@ DEF Fleet2 Transform {
 		}
 	}
 		DEF Fleet2_base Transform {
-			translation 4500 1500 -7794
+			translation 4500 -1000 -7794
 			rotation 0 1 0 1.57
 			scale 30 30 30	
 			children [
@@ -439,6 +439,7 @@ DEF FleetScript Script {
    field    SFNode	fleet2_base USE Fleet2_base
    field    SFNode  p1 USE Acheron
    field	SFNode  p2 USE Theseus
+   field	SFNode	fOi USE	FleetOi
    field	SFFloat	dest 2
    field	SFFloat	wait 0
    field	SFFloat	dest2 2
@@ -461,7 +462,8 @@ DEF FleetScript Script {
 						dest = 1;
 						wait = 0;
 					} else {
-						fleet.scale = new SFVec3f(0, 0, 0); 
+						fleet.scale = new SFVec3f(0, 0, 0);
+						//fOi.keyValue = [new SFRotation(0, 1, 0, 0), new SFRotation(0, 1, 0, 3.14), new SFRotation(0, 1, 0, 6.28)]; 
 						wait = wait + 1;
 					}
 				}
@@ -507,13 +509,13 @@ DEF FleetScript Script {
 						dest2 = 1;
 						wait2 = 0;
 					} else {
-						fleet2.scale = new SFVec3f(0, 0, 0); 
+						fleet2.scale = new SFVec3f(0, 0, 0);
 						wait2 = wait2 + 1;
 					}
 				}
 			 } else {
 				 // On rapproche le vaisseau de la planète de destination
-				fleet2_base.translation =  new SFVec3f(current_pos2.x +5000/100, current_pos2.y - 125/100, 0);			 
+				fleet2_base.translation =  new SFVec3f(current_pos2.x +5000/100, current_pos2.y + 125/100, 0);			 
 			 }	
 		  } else {
 			if(current_pos2.x <= 9000)
@@ -531,7 +533,7 @@ DEF FleetScript Script {
 				}
 			 } else {
 				// On rapproche le vaisseau de la planète de destination
-				fleet2_base.translation =  new SFVec3f(current_pos2.x -5000/100, current_pos2.y + 125/100, 0);			 
+				fleet2_base.translation =  new SFVec3f(current_pos2.x -5000/100, current_pos2.y - 125/100, 0);			 
 			 }
 		 }
 	 }
