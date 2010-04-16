@@ -1,5 +1,8 @@
 #VRML V2.0 utf8
 
+##
+# Construction d'un astéroïde constitutif de la grande ceinture d'astéroïdes de la scnèe
+##
 DEF M Transform {
 	translation 4500 0 0
 	scale 1 1 1
@@ -11,7 +14,7 @@ DEF M Transform {
 		}
 
 
-
+# Gestio nde la rotation du corps sur lui-même
 DEF timer TimeSensor {
 	cycleInterval 5
 	loop TRUE

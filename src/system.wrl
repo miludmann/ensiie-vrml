@@ -1,6 +1,8 @@
 #VRML V2.0 utf8
 
 ## Protos
+
+# Proto d'évitement d'obstacles
 EXTERNPROTO Avoidance [
    eventIn      SFTime     updateRequest
 	eventIn      SFVec3f    set_goal
@@ -15,6 +17,7 @@ EXTERNPROTO Avoidance [
    exposedField MFNode     children 
 ] "../protos/AvoidObstaclesPROTO.wrl"
 
+# Proto de copie d'objets
 EXTERNPROTO Copy [ 
                     field SFInt32    copies           
                     field SFVec3f    center           
@@ -124,6 +127,9 @@ DEF EarthOi OrientationInterpolator {
 ROUTE EarthTs.fraction_changed TO EarthOi.set_fraction
 ROUTE EarthOi.value_changed TO Earth.rotation
 
+# Prise en compte du déplacement de la planète dans le calcul des positions des
+# objets qui devront être évités par le vaisseau déplaçable :
+# on déplace ici un second objet avec la planète qui a un certain de champ de répulsion
 DEF	EarthObs ObstaclePlanete { position 3090 0 0 radius 100 repulsion 10000000 }
 
 ROUTE EarthOi.value_changed TO SObstacle.set_pos_Earth
@@ -132,8 +138,7 @@ ROUTE SObstacle.goal_changed_Earth TO EarthObs.position
 ##
 # Gestion de la planète Antaeus
 # Planète moyenne, bleue, la plus excentrée, et à la révolution lente
-##	   
-
+##
 DEF AntaeusTs TimeSensor {
 	cycleInterval 1600
 	loop TRUE
@@ -156,6 +161,9 @@ DEF AntaeusOi OrientationInterpolator {
 ROUTE AntaeusTs.fraction_changed TO AntaeusOi.set_fraction
 ROUTE AntaeusOi.value_changed TO Antaeus.rotation
 
+# Prise en compte du déplacement de la planète dans le calcul des positions des
+# objets qui devront être évités par le vaisseau déplaçable :
+# on déplace ici un second objet avec la planète qui a un certain de champ de répulsion
 DEF	AntaeusObs ObstaclePlanete { position 23040 0 0 radius 1000 repulsion 20000000 }
 
 ROUTE AntaeusOi.value_changed TO SObstacle.set_pos_Antaeus
@@ -165,8 +173,7 @@ ROUTE SObstacle.goal_changed_Antaeus TO AntaeusObs.position
 ##
 # Gestion de la planète Acheron
 # Planète massive, à la surface brunâtre
-##
-
+##	
 DEF Acheron Transform {
 	translation 0 0 0
 	scale 1 1 1
@@ -189,6 +196,9 @@ DEF AcheronOi OrientationInterpolator {
 ROUTE AcheronTs.fraction_changed TO AcheronOi.set_fraction
 ROUTE AcheronOi.value_changed TO Acheron.rotation
 
+# Prise en compte du déplacement de la planète dans le calcul des positions des
+# objets qui devront être évités par le vaisseau déplaçable :
+# on déplace ici un second objet avec la planète qui a un certain de champ de répulsion
 DEF	AcheronObs ObstaclePlanete { position 9000 0 0 radius 1000 repulsion 200000000 }
 
 ROUTE AcheronOi.value_changed TO SObstacle.set_pos_Acheron
@@ -199,14 +209,16 @@ ROUTE SObstacle.goal_changed_Acheron TO AcheronObs.position
 # Si le navigateur a tendance à être trop ralenti et les déplacement saccadés, il peut
 # alors être nécessaire de diminuer le nombre d'astéroïdes présents.
 # Pour cela, changer les deux champs "copies" qui détermine le nombre des corps rocheux.
-##
-
-
+#
+# NB : pour des questions d'ergonomie et d'échelle, les astéroïdes sont traversables
+# par le vaisseau déplaçable
+##	
 DEF Ceinture_asteroidesTs TimeSensor {
 	cycleInterval 100
 	loop TRUE
 }
 
+# Utilisation du proto de Copie pour créer une première boucle d'astéroides
 DEF Ceinture_asteroides_H Transform {
 	children [
 		Copy {
@@ -235,6 +247,7 @@ DEF Ceinture_asteroidesPi OrientationInterpolator {
 ROUTE Ceinture_asteroidesTs.fraction_changed TO Ceinture_asteroidesPi.set_fraction
 ROUTE Ceinture_asteroidesPi.value_changed TO Ceinture_asteroides_H.rotation
 
+# Utilisation du proto de Copie pour créer une seconde boucle d'astéroides
 DEF Ceinture_asteroides_B Transform {
 	children [
 		Copy {
@@ -285,6 +298,9 @@ DEF TheseusOi OrientationInterpolator {
 ROUTE TheseusTs.fraction_changed TO TheseusOi.set_fraction
 ROUTE TheseusOi.value_changed TO Theseus.rotation
 
+# Prise en compte du déplacement de la planète dans le calcul des positions des
+# objets qui devront être évités par le vaisseau déplaçable :
+# on déplace ici un second objet avec la planète qui a un certain de champ de répulsion
 DEF	TheseusObs ObstaclePlanete { position 14000 0 0 radius 1000 repulsion 115000000 }
 
 ROUTE TheseusOi.value_changed TO SObstacle.set_pos_Theseus
@@ -319,6 +335,9 @@ DEF ErebusOi OrientationInterpolator {
 ROUTE ErebusTs.fraction_changed TO ErebusOi.set_fraction
 ROUTE ErebusOi.value_changed TO Erebus.rotation
 
+# Prise en compte du déplacement de la planète dans le calcul des positions des
+# objets qui devront être évités par le vaisseau déplaçable :
+# on déplace ici un second objet avec la planète qui a un certain de champ de répulsion
 DEF	ErebusObs ObstaclePlanete { position 17750 0 0 radius 1000 repulsion 200000000 }
 
 ROUTE ErebusOi.value_changed TO SObstacle.set_pos_Erebus
@@ -326,8 +345,7 @@ ROUTE SObstacle.goal_changed_Erebus TO ErebusObs.position
 
 ##
 # Gestion des vaisseaux se déplaçant de planète en planète
-##
-
+## 
 DEF FleetTs TimeSensor {
 	cycleInterval 15
 	loop TRUE
@@ -338,6 +356,7 @@ DEF Fleet2Ts TimeSensor {
 	loop TRUE
 }
 
+# Première flotte d'Imperial Destroyers
 DEF Fleet Transform {
 	children [
 
@@ -379,6 +398,7 @@ DEF Fleet Transform {
 			]
 }]}
 
+# Seconde flottes de X-Wings
 DEF Fleet2 Transform {
 
 	children [
@@ -430,6 +450,9 @@ DEF Fleet2Oi OrientationInterpolator {
 	keyValue  [ 0 1 0 0, 0 1 0 -3.14, 0 1 0 -6.28,  ]
 }
 
+# Gestion du déplacement des vaisseaux : chaque flotte se déplace de la planète Acheron (massive, brune) à la planète
+# Theseus (avec les anneaux), en se rapprochant progressiment par une approche en spirale
+# Une fois arrivée à destination, la flotte atterit sur la planète, attend quelques instants puis repart vers l'autre planète.
 DEF FleetScript Script { 
    eventIn  SFRotation set_pos
    eventIn  SFRotation set_pos2
@@ -572,7 +595,7 @@ PROTO Obstacle [
    }
 }
 
-# Cible déplaçable à atteindre par le vaisseau
+# Cible déplaçable ("carré" vert) manuellement que doit atteindre le vaisseau (fichier "ovni.wrl")
 Transform {
    rotation 1 0 0 -1.57
    children [ ## in here its the XY plane, to match PlaneSensor
@@ -609,7 +632,13 @@ Transform {
       }
    ]
 }
-# Sol virtuel
+
+# Sol virtuel cliquable	: surface presque totalement transparente, circulaire, sur laquelle on peut
+# maintenir un clic gauche de la souris pour déplacer la cible verte (même au-delà de cette zone)
+# La surface ne couvre pas totalement le système pour pouvoir encore autoriser des déplacement
+# manuels des points de vue
+#
+# NB : ne pas hésiter à diminuer le taux de transparence si ce "sol" n'est pas visible sur votre écran
 Transform {
    translation 0 -1 0
    rotation 0 0 0 -1.57
@@ -625,11 +654,15 @@ Transform {
    ]
 }
 
+# Utilisation du proto d'évitement
 DEF A Avoidance {
    position 5000 0 0
    goal     -5000 0 0
    speed    1200
    obstacles [
+	  # Corps qui seront non traversables par l'objet déplaçable
+	  # (Voir plus haut pour la définition de chacun de ces astres et la
+	  # manière de gérer les objets à éviter en mouvement)
       USE Exodus
 	  USE AcheronObs
 	  USE EarthObs

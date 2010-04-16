@@ -1,10 +1,16 @@
 #VRML V2.0 utf8
 
+
+##
+# Création de la planète Erebus
+# Planète de taille petite voire moyenne, verte
+# Son cercle de révolution à la particularité d'être oblique par rapport
+# au plan classique du système
+##
 Viewpoint {
 	position 19000 1000 0
 	orientation 0 -.5 -.15 -1.57
-	description "Erebus"
-	
+	description "Erebus"	
 }
 
 DEF M Transform {
@@ -28,7 +34,7 @@ DEF M Transform {
 				radius 500.00
 			}
 			}
-			Shape {
+			Shape {	 # Simulation d'un atmosphère par une sphère transparente
 			appearance Appearance {
 				material DEF Atmo Material {
 					diffuseColor 0.3 0.9 0.1
@@ -45,6 +51,7 @@ DEF M Transform {
 ]
 }
 
+# Gestion de la rotation de la planète sur elle-même
 DEF timer TimeSensor {
 	cycleInterval 5
 	loop TRUE
@@ -59,10 +66,11 @@ DEF Mo OrientationInterpolator {
 ROUTE timer.fraction_changed TO Mo.set_fraction
 ROUTE Mo.value_changed TO M.rotation
 
+# Son d'ambiance propre à la planète Erebus
 Sound {
 			maxFront 600
 			maxBack 600
-			location 0 0 0
+			location 19000 1000 0
 			
 source AudioClip { startTime 1
 			stopTime 0

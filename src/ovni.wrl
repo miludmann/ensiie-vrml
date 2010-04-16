@@ -1,12 +1,16 @@
 #VRML V2.0 utf8
 
-
+## 
+# Création du vaisseau déplaçable, sorte d'OVNI consistué de formes
+# géométriques simples, résultat de premières manipulations en VRML
+##
 Viewpoint {
 	position 50 20 0
 	orientation 0 -.5 -.15 -1.57
 	description "Vaisseau (vue 1)"	
 }
 
+# Point de vue supérieur
 Viewpoint {
 	position 0 50 0
 	orientation 1 0 0 -1.57
@@ -83,6 +87,7 @@ Shape {
   }
 }
 
+# Son du vaisseau, que l'on entend à sa proximité
 Sound {
 			maxFront 200
 			maxBack 200
