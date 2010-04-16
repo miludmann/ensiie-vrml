@@ -222,7 +222,7 @@ DEF Ceinture_asteroidesTs TimeSensor {
 DEF Ceinture_asteroides_H Transform {
 	children [
 		Copy {
-		   copies 300
+		   copies 700 # CHAMP A MODIFIER SI LA VISUALISATION DE LA SCENE EST TROP RALENTIE
 		   center 0 0 0
 		   translation 1 0 0
 		   rotation 0 1 0 0.45
@@ -251,7 +251,7 @@ ROUTE Ceinture_asteroidesPi.value_changed TO Ceinture_asteroides_H.rotation
 DEF Ceinture_asteroides_B Transform {
 	children [
 		Copy {
-		   copies 300
+		   copies 500 # CHAMP A MODIFIER SI LA VISUALISATION DE LA SCENE EST TROP RALENTIE
 		   center 0 0 0
 		   translation 1 0 0
 		   rotation 0 1 0 0.45
@@ -647,7 +647,7 @@ Transform {
       Shape {
          appearance Appearance {
             material Material { diffuseColor .4 .4 .4
-								transparency 0.95 }
+								transparency 0.95 # A MODIFIER SI NECESSAIRE POUR ETRE VISIBLE}
          }
          geometry Cylinder { height 1 radius 13000 }
       }
