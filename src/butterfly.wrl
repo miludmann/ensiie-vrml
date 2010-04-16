@@ -1,0 +1,264 @@
+#VRML V2.0 utf8
+
+Background { 
+  groundAngle [ 1.53, 1.57 ]
+  groundColor [ 0.3 0.45 0.2, 0.25 0.4 0.15, 0.2 0.35 0.1 ]
+  skyAngle [ 1.4, 1.5 ]
+  skyColor [ 0.2 0.2 1, 0.5 0.5 1, 0.9 0.9 1 ]
+}
+
+Transform { 
+  children [
+    Transform { 
+      translation -5 0 0
+      children 
+        DEF Butterfly1 Transform { 
+          children [
+            DEF leftWingButterfly1 Transform { 
+              children [
+                Shape { 
+                  appearance Appearance { 
+                    texture ImageTexture { 
+                      url "../textures/gauche.gif" 
+                    }
+                  }
+                  geometry IndexedFaceSet { 
+                    coordIndex [ 0, 1, 2, 3, -1 ]
+                    texCoordIndex [ 0, 1, 2, 3, -1 ]
+                    normalPerVertex FALSE
+                    coord Coordinate { 
+                      point [ -0.89 0 0.67, 0 0 0.67, 0 0 -0.67, -0.89 0 -0.67 ]
+                    }
+                    texCoord TextureCoordinate { 
+                      point [ 0 0, 1 0, 1 1, 0 1 ]
+                    }
+                  }
+                }
+                Shape { 
+                  appearance Appearance { 
+                    texture ImageTexture { 
+                      url "../textures/gauche.gif" 
+                    }
+                  }
+                  geometry IndexedFaceSet { 
+                    coordIndex [ 1, 0, 3, 2, -1 ]
+                    texCoordIndex [ 1, 0, 3, 2, -1 ]
+                    normalPerVertex FALSE
+                    coord Coordinate { 
+                      point [ -0.89 0 0.67, 0 0 0.67, 0 0 -0.67, -0.89 0 -0.67 ]
+                    }
+                    texCoord TextureCoordinate { 
+                      point [ 0 0, 1 0, 1 1, 0 1 ]
+                    }
+                  }
+                }
+              ]
+            }
+            DEF rightWingButterfly1 Transform { 
+              children [
+                Shape { 
+                  appearance Appearance { 
+                    texture ImageTexture { 
+                      url "../textures/droite.gif" 
+                    }
+                  }
+                  geometry IndexedFaceSet { 
+                    coordIndex [ 0, 1, 2, 3, -1 ]
+                    texCoordIndex [ 0, 1, 2, 3, -1 ]
+                    normalPerVertex FALSE
+                    coord Coordinate { 
+                      point [ 0 0 0.67, 0.89 0 0.67, 0.89 0 -0.67, 0 0 -0.67 ]
+                    }
+                    texCoord TextureCoordinate { 
+                      point [ 0 0, 1 0, 1 1, 0 1 ]
+                    }
+                  }
+                }
+                Shape { 
+                  appearance Appearance { 
+                    texture ImageTexture { 
+                      url "../textures/droite.gif" 
+                    }
+                  }
+                  geometry IndexedFaceSet { 
+                    coordIndex [ 1, 0, 3, 2, -1 ]
+                    texCoordIndex [ 1, 0, 3, 2, -1 ]
+                    normalPerVertex FALSE
+                    coord Coordinate { 
+                      point [ 0 0 0.67, 0.89 0 0.67, 0.89 0 -0.67, 0 0 -0.67 ]
+                    }
+                    texCoord TextureCoordinate { 
+                      point [ 0 0, 1 0, 1 1, 0 1 ]
+                    }
+                  }
+                }
+              ]
+            }
+            DEF leftWingButterfly1_ORI OrientationInterpolator { 
+              key [ 0, 0.25, 0.5, 0.75, 1 ]
+              keyValue [ 0 0 1 0, 0 0 1 -0.8, 0 0 1 0, 0 0 1 0.8, 0 0 1 0 ]
+            }
+            DEF rightWingButterfly1_ORI OrientationInterpolator { 
+              key [ 0, 0.25, 0.5, 0.75, 1 ]
+              keyValue [ 0 0 1 0, 0 0 1 0.8, 0 0 1 0, 0 0 1 -0.8, 0 0 1 0 ]
+            }
+            DEF Butterfly1_TS1 TimeSensor { 
+              loop TRUE
+            }
+            DEF Butterfly1_TS2 TimeSensor { 
+              cycleInterval 20
+              loop TRUE
+            }
+            DEF Butterfly1_POS2 PositionInterpolator { 
+              key [ 0, 0.125, 0.25, 0.375, 0.5, 0.625, 0.75, 0.875, 1 ]
+              keyValue [ 0 0 5, 3.53553 2.5 3.53554, 5 5 6.63397e-006, 3.53554 2.50001 -3.53553, 1.32679e-005 3.52077e-011 -5, 
+                  -3.53552 2.49998 -3.53555, -5 5 -1.99019e-005, -3.53555 2.50002 3.53552, -2.65359e-005 1.40831e-010 5 
+                  ]
+            }
+            DEF Butterfly1_ORI2 OrientationInterpolator { 
+              key [ 0, 0.125, 0.25, 0.375, 0.5, 0.625, 0.75, 0.875, 1 ]
+              keyValue [ -0.261856 0.929545 -0.25957 -1.63504, -0.590284 0.769274 -0.244504 -0.987862, 0 1 0 0, 
+                  -0.590286 0.769273 0.244504 0.98786, 0 1 0 1.57079, 0.124492 0.945607 -0.300549 2.39496, 
+                  0 1 0 -3.14159, 0.124491 0.945607 0.300549 -2.39496, 0.257612 0.930644 0.259882 -1.65136 
+                  ]
+            }
+          ]
+        }
+    }
+    Transform { 
+      translation 5 0 0
+      children 
+        DEF Butterfly2 Transform { 
+          children [
+            DEF leftWingButterfly2 Transform { 
+              children [
+                Shape { 
+                  appearance Appearance { 
+                    texture ImageTexture { 
+                      url "../textures/phorb_gauche_1.gif" 
+                    }
+                  }
+                  geometry IndexedFaceSet { 
+                    coordIndex [ 0, 1, 2, 3, -1 ]
+                    texCoordIndex [ 0, 1, 2, 3, -1 ]
+                    normalPerVertex FALSE
+                    coord Coordinate { 
+                      point [ -0.95 0 0.815, 0 0 0.815, 0 0 -0.815, -0.95 0 -0.815 ]
+                    }
+                    texCoord TextureCoordinate { 
+                      point [ 0 0, 1 0, 1 1, 0 1 ]
+                    }
+                  }
+                }
+                Shape { 
+                  appearance Appearance { 
+                    texture ImageTexture { 
+                      url "../textures/phorb_gauche_1.gif" 
+                    }
+                  }
+                  geometry IndexedFaceSet { 
+                    coordIndex [ 1, 0, 3, 2, -1 ]
+                    texCoordIndex [ 1, 0, 3, 2, -1 ]
+                    normalPerVertex FALSE
+                    coord Coordinate { 
+                      point [ -0.95 0 0.815, 0 0 0.815, 0 0 -0.815, -0.95 0 -0.815 ]
+                    }
+                    texCoord TextureCoordinate { 
+                      point [ 0 0, 1 0, 1 1, 0 1 ]
+                    }
+                  }
+                }
+              ]
+            }
+            DEF rightWingButterfly2 Transform { 
+              children [
+                Shape { 
+                  appearance Appearance { 
+                    texture ImageTexture { 
+                      url "../textures/phorb_droit_1.gif" 
+                    }
+                  }
+                  geometry IndexedFaceSet { 
+                    coordIndex [ 0, 1, 2, 3, -1 ]
+                    texCoordIndex [ 0, 1, 2, 3, -1 ]
+                    normalPerVertex FALSE
+                    coord Coordinate { 
+                      point [ 0 0 0.815, 0.95 0 0.815, 0.95 0 -0.815, 0 0 -0.815 ]
+                    }
+                    texCoord TextureCoordinate { 
+                      point [ 0 0, 1 0, 1 1, 0 1 ]
+                    }
+                  }
+                }
+                Shape { 
+                  appearance Appearance { 
+                    texture ImageTexture { 
+                      url "../textures/phorb_droit_1.gif" 
+                    }
+                  }
+                  geometry IndexedFaceSet { 
+                    coordIndex [ 1, 0, 3, 2, -1 ]
+                    texCoordIndex [ 1, 0, 3, 2, -1 ]
+                    normalPerVertex FALSE
+                    coord Coordinate { 
+                      point [ 0 0 0.815, 0.95 0 0.815, 0.95 0 -0.815, 0 0 -0.815 ]
+                    }
+                    texCoord TextureCoordinate { 
+                      point [ 0 0, 1 0, 1 1, 0 1 ]
+                    }
+                  }
+                }
+              ]
+            }
+            DEF leftWingButterfly2_ORI OrientationInterpolator { 
+              key [ 0, 0.25, 0.5, 0.75, 1 ]
+              keyValue [ 0 0 1 0, 0 0 1 -0.7, 0 0 1 0, 0 0 1 0.7, 0 0 1 0 ]
+            }
+            DEF rightWingButterfly2_ORI OrientationInterpolator { 
+              key [ 0, 0.25, 0.5, 0.75, 1 ]
+              keyValue [ 0 0 1 0, 0 0 1 0.7, 0 0 1 0, 0 0 1 -0.7, 0 0 1 0 ]
+            }
+            DEF Butterfly2_TS1 TimeSensor { 
+              cycleInterval 1.2
+              loop TRUE
+            }
+            DEF Butterfly2_TS2 TimeSensor { 
+              cycleInterval 20
+              loop TRUE
+            }
+            DEF Butterfly2_POS2 PositionInterpolator { 
+              key [ 0, 0.125, 0.25, 0.375, 0.5, 0.625, 0.75, 0.875, 1 ]
+              keyValue [ 0 0 5, 3.53553 2.5 3.53554, 5 5 6.63397e-006, 3.53554 2.50001 -3.53553, 1.32679e-005 3.52077e-011 -5, 
+                  -3.53552 2.49998 -3.53555, -5 5 -1.99019e-005, -3.53555 2.50002 3.53552, -2.65359e-005 1.40831e-010 5 
+                  ]
+            }
+            DEF Butterfly2_ORI2 OrientationInterpolator { 
+              key [ 0, 0.125, 0.25, 0.375, 0.5, 0.625, 0.75, 0.875, 1 ]
+              keyValue [ -0.261856 0.929545 -0.25957 -1.63504, -0.590284 0.769274 -0.244504 -0.987862, 0 1 0 0, 
+                  -0.590286 0.769273 0.244504 0.98786, 0 1 0 1.57079, 0.124492 0.945607 -0.300549 2.39496, 
+                  0 1 0 -3.14159, 0.124491 0.945607 0.300549 -2.39496, 0.257612 0.930644 0.259882 -1.65136 
+                  ]
+            }
+          ]
+        }
+    }
+  ]
+}
+
+ROUTE Butterfly1_TS1.fraction_changed TO leftWingButterfly1_ORI.set_fraction
+ROUTE Butterfly1_TS1.fraction_changed TO rightWingButterfly1_ORI.set_fraction
+ROUTE leftWingButterfly1_ORI.value_changed TO leftWingButterfly1.rotation
+ROUTE rightWingButterfly1_ORI.value_changed TO rightWingButterfly1.rotation
+ROUTE Butterfly2_TS1.fraction_changed TO leftWingButterfly2_ORI.set_fraction
+ROUTE Butterfly2_TS1.fraction_changed TO rightWingButterfly2_ORI.set_fraction
+ROUTE leftWingButterfly2_ORI.value_changed TO leftWingButterfly2.rotation
+ROUTE rightWingButterfly2_ORI.value_changed TO rightWingButterfly2.rotation
+ROUTE Butterfly1_TS2.fraction_changed TO Butterfly1_POS2.set_fraction
+ROUTE Butterfly1_TS2.fraction_changed TO Butterfly1_ORI2.set_fraction
+ROUTE Butterfly1_POS2.value_changed TO Butterfly1.translation
+ROUTE Butterfly1_ORI2.value_changed TO Butterfly1.rotation
+ROUTE Butterfly2_TS2.fraction_changed TO Butterfly2_POS2.set_fraction
+ROUTE Butterfly2_TS2.fraction_changed TO Butterfly2_ORI2.set_fraction
+ROUTE Butterfly2_POS2.value_changed TO Butterfly2.translation
+ROUTE Butterfly2_ORI2.value_changed TO Butterfly2.rotation
+

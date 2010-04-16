@@ -56,8 +56,8 @@ DEF M Transform {
 		}
 	]}
 		Transform {
-			translation 200 0 0
-			rotation 0 0 1 -1.57
+			translation 141.42 141.42 0
+			rotation 0 0 1 -0.8
 			children [
 #VRML V2.0 utf8
 
@@ -69,7 +69,8 @@ Transform {
 	children	[
 
 DEF baseVp1 Viewpoint {
-	position 3 2 10
+	position 3 15 20
+	orientation	1 0 0 -0.6
 	description "Base"
 } 
 
@@ -119,7 +120,7 @@ Shape {
 	}
    appearance Appearance { 
 	  texture ImageTexture {
-		  url "../textures/grass.gif"
+		  url "../textures/sol.jpg"
 	  }
   }
 }
@@ -128,7 +129,30 @@ Shape {
 
 Transform {
 	translation 0 0.5 0
- children [		 
+ children [
+	 Inline	{url "butterfly.wrl"}
+Transform {
+ children [ 
+	 Inline	{url "arbre.wrl"}
+ ]}
+ Transform {
+	translation	0 0 10
+	scale 0.5 0.5 0.5
+ children [ 
+	 Inline	{url "arbre.wrl"}
+ ]}
+ Transform {
+	translation	10 0 5
+	scale 0.7 0.7 0.7
+ children [ 
+	 Inline	{url "arbre.wrl"}
+ ]}
+ Transform {
+	translation	5 0 15
+	scale 0.8 0.8 0.8
+ children [ 
+	 Inline	{url "arbre.wrl"}
+ ]}
 
 Transform {
 	translation	80 0.01 0
@@ -186,6 +210,37 @@ Shape {
 
 	 }
  ]}
+	 DEF destroyer Transform {
+		 translation 0 5 0
+		 rotation 1 0 0 -1.57
+		 scale 0.3 0.3 0.3
+		 children [
+			 Inline	{
+				 url "destroyer.wrl"
+			 }
+		 ]
+	 }
+			DEF	TOS_destroyer TouchSensor {}
+			DEF	TS_destroyer TimeSensor	{cycleInterval 100}
+			DEF	PI_destroyer PositionInterpolator {
+				key	[0 0.15 0.5 0.85 1]
+				keyValue [0 5 0, 0 300 0, -10000 200 0, 0 300 0, 0 5 0]
+			}
+			DEF	OI_destroyer OrientationInterpolator {
+				key	[0 0.15 0.5 0.85 1]
+				keyValue [1 0 0 -1.57, 1 1 0 3.14, 1 0 0 -1.57, 1 1 0 -3.14, 1 0 0 -1.57]
+			}
+      Sound {
+	priority 1
+	minFront 100
+	minBack 100
+	maxFront 300
+	maxBack 300
+	source DEF S_destroyer AudioClip {
+	  url "../sounds/tie-fighter-fly-by.wav"
+	}
+      }
+
            ] 
 }
 
@@ -796,18 +851,43 @@ Transform {
 
 Transform {
  translation -65 0.01 36
- scale 0.1 0.1 0.1
+ scale 0.8 0.8 0.8
 			children [
+				DEF buggy Transform {
+					children [
 				Inline { url "buggybdy.wrl" }
+			]}
+
+			DEF	TOS_buggy TouchSensor {}
+			DEF	TS_buggy TimeSensor	{cycleInterval 5}
+			DEF	PI_buggy PositionInterpolator {
+				key	[0 0.25 0.5 0.75 1]
+				keyValue [0 0 0, 50 0 0, 50 0 -50, 0 0 -50, 0 0 0]
+			}
+			DEF	OI_buggy OrientationInterpolator {
+				key	[0 0.25 0.25 0.5 0.5 0.75 0.75 1]
+				keyValue [0 1 0 0, 0 1 0 0, 0 1 0 1.57, 0 1 0 1.57, 0 1 0 3.14, 0 1 0 3.14, 0 1 0 -1.57, 0 1 0 -1.57]
+			}
+      Sound {
+	priority 1
+	minFront 100
+	minBack 100
+	maxFront 300
+	maxBack 300
+	source DEF S_buggy AudioClip {
+	  url "../sounds/voiture-course-8.mp3"
+	}
+      }
+
  	DEF baseVp2 Viewpoint {
-	position 1 20 50
+	position 1 5 25
 	description "Buggy"
 } 
 
 DEF baseNav2 NavigationInfo {
 	#avatarSize [0.25, 1.6, 0.75]
     headlight TRUE 
-    speed 50 
+    speed 6 
     type "FLY" 
     visibilityLimit 0.0 
 }  
@@ -819,7 +899,7 @@ DEF baseBg2 Background {
 DEF baseFog2 Fog {
     color 0.2 0.1 0.3 
     fogType "EXPONENTIAL" 
-    visibilityRange 0.005 
+    visibilityRange 0.01 
 } 
 ]}
 DEF tr1 Transform {
@@ -1012,3 +1092,21 @@ ROUTE baseVp2.isBound TO baseBg2.set_bind
 ROUTE baseVp2.isBound TO baseFog2.set_bind
 ROUTE baseVp2.isBound TO script1.baseVp2_isBound
 ROUTE script1.timer_enabled TO timer.enabled
+
+# buggy move
+ROUTE TOS_buggy.touchTime TO TS_buggy.startTime
+ROUTE TS_buggy.fraction_changed TO PI_buggy.set_fraction
+ROUTE PI_buggy.value_changed TO buggy.translation
+ROUTE TS_buggy.fraction_changed TO OI_buggy.set_fraction
+ROUTE OI_buggy.value_changed TO buggy.rotation
+# buggy sound
+ROUTE TOS_buggy.touchTime TO S_buggy.startTime
+
+# destroyer move
+ROUTE TOS_destroyer.touchTime TO TS_destroyer.startTime
+ROUTE TS_destroyer.fraction_changed TO PI_destroyer.set_fraction
+ROUTE PI_destroyer.value_changed TO destroyer.translation
+ROUTE TS_destroyer.fraction_changed TO OI_destroyer.set_fraction
+ROUTE OI_destroyer.value_changed TO destroyer.rotation
+# destroyer sound
+ROUTE TOS_destroyer.touchTime TO S_destroyer.startTime
