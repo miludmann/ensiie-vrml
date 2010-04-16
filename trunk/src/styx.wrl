@@ -1,5 +1,8 @@
 #VRML V2.0 utf8 
 
+##
+# Creation d'un asteroide (realise a l'aide d'un logiciel de modelisation 3D)
+##
 Viewpoint {
 position 0 0 60.0
 description "Ceinture asteroides"
@@ -17,7 +20,7 @@ Group {
           }
           texture
           ImageTexture {
-             url "../textures/phobos.jpg"
+             url "../textures/styx.jpg"
           }
        }
        geometry

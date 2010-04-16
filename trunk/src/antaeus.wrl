@@ -1,5 +1,9 @@
 #VRML V2.0 utf8
 
+##
+# Construction de la planète Antaeus
+# Planète moyenne, bleue, la plus excentrée, et à la révolution lente
+##
 Viewpoint {
 	position 25540 1000 0
 	orientation 0 -.5 -.15 -1.57
@@ -32,7 +36,7 @@ DEF M Transform {
 					radius 400.00
 				}
 				}
-				Shape {
+				Shape {  # Simulation d'un atmosphère par une sphère transparente
 					appearance Appearance {
 						material DEF Atmo Material {
 							diffuseColor 0.1 0.1 0.8
@@ -49,6 +53,7 @@ DEF M Transform {
 ]
 }
 
+# Gestion de la rotation de la planète sur elle-même
 DEF timer TimeSensor {
 	cycleInterval 5
 	loop TRUE

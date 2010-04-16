@@ -1,7 +1,9 @@
 #VRML V2.0 utf8
 
 
-## Scene Setup
+##
+# Fichier principal, qui installe la scène
+##
 NavigationInfo {
 	avatarSize [ 0.25, 1.6, 0.75 ]
 	#type "FLY"
@@ -9,6 +11,7 @@ NavigationInfo {
 	speed 50.00
 }
 
+# Deux points de vue globaux
 Viewpoint {
 	position 0 150 300
 	orientation 1 0 0 -.57
@@ -22,6 +25,7 @@ Viewpoint {
    jump FALSE
 }
 
+# Fond de ciel étoilé
 Background {
 	skyColor [
 		0.0 0.0 0.0,
@@ -36,7 +40,7 @@ Background {
 	]
 	groundAngle [ 1.309, 1.571 ]
 	
-	#back, bottom, front, left, right,top url
+	# URL arrière, bas, avant, gauche, droite, haut
 	topUrl "../textures/space2.jpg"
 	backUrl "../textures/space2.jpg"
 	bottomUrl "../textures/space2.jpg"
@@ -45,6 +49,7 @@ Background {
 	rightUrl "../textures/space2.jpg"
 }
 
+# Musique d'ambiance (extrait du merveilleux jeu de rôle/Space opera qu'est Mass Effect)
 Sound {
 			maxFront 4500
 			maxBack 4500
@@ -59,6 +64,7 @@ source AudioClip { startTime 1
 
 }
 
+# Inclusion du système en lui-même, avec ses planètes
 Collision {
 	collide	FALSE
 	children [

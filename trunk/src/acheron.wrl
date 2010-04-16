@@ -1,5 +1,9 @@
 #VRML V2.0 utf8
 
+##
+# Construction de la planète Acheron
+# Planète massive, à la surface brunâtre, à mi-distance dans le système
+##
 Viewpoint {
 	position 12000 2000 0
 	orientation 0 -.5 -.15 -1.57
@@ -27,7 +31,7 @@ DEF M Transform {
 						radius 1000.00
 					}
 					}
-					Shape {
+					Shape {	 # Simulation d'un atmosphère par une sphère transparente
 					appearance Appearance {
 						material DEF Atmo Material {
 							diffuseColor 0.8 0.2 0.2
@@ -45,6 +49,7 @@ DEF M Transform {
 ]
 }
 
+# Gestion de la rotation de la planète sur elle-même
 DEF timer TimeSensor {
 	cycleInterval 5
 	loop TRUE

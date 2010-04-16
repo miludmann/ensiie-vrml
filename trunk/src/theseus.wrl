@@ -1,5 +1,10 @@
 #VRML V2.0 utf8
 
+##
+# Gestion de la planète Theseus
+# Planète moyenne, à la surface jaune, et possèdant des anneaux elliptiques
+##
+
 Viewpoint {
 	position 19000 1500 0
 	orientation 0 -.5 -.15 -1.57
@@ -44,7 +49,7 @@ DEF	Theseus Transform {
 								radius 850.00
 							}
 							}
-							Shape {
+							Shape { # Simulation d'un atmosphère par une sphère transparente
 							appearance Appearance {
 								material DEF Atmo Material {
 									diffuseColor 0.5 0.5 0.5
@@ -63,7 +68,7 @@ DEF	Theseus Transform {
 	]
 }
 
-
+# Rotation de la planète sur elle-même
 DEF timer TimeSensor {
 	cycleInterval 5
 	loop TRUE

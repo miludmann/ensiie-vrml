@@ -1,5 +1,11 @@
 #VRML V2.0 utf8
 
+##
+# Création de l'astre Exodus
+# Equivalent du Soleil de notre cher système solaire, il est l'élément central
+# de la scène, et ne se déplace donc pas.
+# Sa particularité est qu'il a une coloration dynamique
+##
 Viewpoint {
 	position 400 400 0
 	orientation 0 -.5 -.15 -1.57
@@ -11,7 +17,7 @@ Transform {
 	translation 0 0 0	
 			children [
 Shape {
-		appearance Appearance {
+		appearance Appearance {	# Aspect statique de l'étoile
 			material DEF Exodus Material {
 				diffuseColor 1 .5 0
 				emissiveColor .5 .25 0
@@ -28,6 +34,8 @@ Shape {
 ]
 }
 
+# Gestion de la coloration de l'astre, qui donne l'illusion d'un rayonnement
+# et d'une activité solaire
 DEF timer TimeSensor {
 	cycleInterval 2
 	loop TRUE
@@ -50,16 +58,24 @@ ROUTE timer.fraction_changed TO ExodusSc.set_fraction
 ROUTE ExodusSc.value_changed TO Exodus.specularColor
 
 
+# Son de l'étoile, qui reprend le véritable "bruit" de notre propre soleil,
+# à un ensemble de basses fréquences. Ce son s'entend particulièrement lorsque l'on
+# se situe à proximité de l'astre Exodus, mais est audible dans toute la scène (à
+# condition d'y prêter attention, ou de baisser le volume de la musique d'ambiance,
+# puisque c'est un bruit continue, grave, sourd)
+#
+# Source : http://soi.stanford.edu/results/sounds.html
 Sound {
-			maxFront 10000
-			maxBack 10000
-			location 0 0 0
-			
-source AudioClip { startTime 1
-			stopTime 0
-                  url  "../sounds/soundOfTheSun.mp3" 
-			loop TRUE
-	
-              }
 
+	maxFront 10000
+	maxBack 10000
+	location 0 0 0
+			
+	source AudioClip { 
+		startTime 1
+		stopTime 0
+              url  "../sounds/soundOfTheSun.mp3" 
+		loop TRUE
+
+        }
 }

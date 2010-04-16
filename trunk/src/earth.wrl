@@ -1,5 +1,14 @@
 #VRML V2.0 utf8
 
+
+##
+# Construction de la planète Terre, seule corps céleste représentant d'une planète
+# réelle, du moins dans l'apparence.
+# Planète de petite taille, proche du soleil, à la révolution rapide, et
+# possédant une lune.
+# C'est dessus que se trouve la base spatiale où se meuvent d'autres objets
+# à une échelle très faible comparé au reste de la scène.
+##
 Viewpoint {
 	position 3800 150 0
 	orientation 0 -.5 -.1 -1.57
@@ -7,6 +16,7 @@ Viewpoint {
 	
 }
 
+# Gestion de la lune
 DEF Moon Transform {
 	translation 3090 0 0
 	scale 1 1 1
@@ -17,6 +27,7 @@ DEF Moon Transform {
 			]
 		}
 
+# Création de la planète
 DEF M Transform {
 	translation 3090 0 0
 	
@@ -40,7 +51,7 @@ DEF M Transform {
 		Collision {
 			collide	FALSE
 			children [
-		Shape {
+		Shape {	 # Simulation d'un atmosphère par une sphère transparente
 		appearance Appearance {
 			material DEF Atmo Material {
 				diffuseColor 0.0 0.2 0.8
@@ -59,9 +70,10 @@ DEF M Transform {
 			translation 141.42 141.42 0
 			rotation 0 0 1 -0.8
 			children [
-#VRML V2.0 utf8
 
-
+##
+# Mise en place de la base spatiale
+##	  
 Transform {
  children [		 
 
