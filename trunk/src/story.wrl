@@ -1,0 +1,217 @@
+#VRML V2.0 utf8
+
+NavigationInfo {
+	headlight TRUE
+	type "NONE"
+}
+
+Background {
+	skyColor [
+		0.0 0.0 0.0,
+	]
+	topUrl "../textures/space2.jpg"
+	backUrl "../textures/space2.jpg"
+	bottomUrl "../textures/space2.jpg"
+	frontUrl "../textures/space2.jpg"
+	leftUrl "../textures/space2.jpg"
+	rightUrl "../textures/space2.jpg"
+}
+
+Transform {
+	rotation 1 0 0 -1.4
+	children [
+		DEF storyText Transform {
+			translation	0 -8 0
+			children [
+			Shape {
+				appearance Appearance {
+					material DEF Mat_storyText Material {
+						transparency 0
+						emissiveColor 0.9 0.8 0.2
+					}
+				}
+				geometry Text {
+					length [2,3,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4]
+					string [
+						"Episode VII",
+						"R2D2 CONTRE-ATTAQUE",
+						""
+						"La guerre a fait des ravages!",
+						"Cependant, une petite colonie",
+						"de robots r2d2 a survécu.",
+						"Par leur courage et leur",
+						"persévérance, ils sont parvenus",
+						"à atteindre une planète paisible",
+						"nommé \"La Terre\".",
+						"",
+						"Afin de préserver leur espèce,",
+						"ils décident de fonder",
+						"un village dans un lieu isolé,",
+						"encerclés par la chaîne",
+						"montagneuse himalayenne.",
+						"",
+						"Là, ils y découvrent des",
+						"paysages somptueux,",
+						"et apprennent à travailler",
+						"la terre. Ils vivent ainsi",
+						"en harmonie avec les arbres",
+						"et les papillons.",
+						"",
+						"Mais au travers de la Force,",
+						"ils perçoivent une menace",
+						"grandissante. Ils décident",
+						"alors de se prémunir contre",
+						"d'éventuelles attaques extérieures.",
+						"Leur progrès est fulgurant.",
+						"Ils construisent maisons,",
+						"routes et buggies. Ils se sont",
+						"même munis d'un vaisseau spatial.",
+						"",
+						"Ils distinguent alors au loin,",
+						"au-delà de la ceinture d'astéroides,",
+						"les vaisseaux de l'Empereur du Mal....",
+					]
+					fontStyle FontStyle	{
+						justify	"MIDDLE"
+						family "SANS"
+						style "BOLD"
+					}
+				}
+			}
+]
+}
+]
+}
+
+DEF storyText0 Transform {
+	translation	-4 0 0
+	children [
+Shape {
+	appearance Appearance {
+		material DEF Mat_storyText0 Material {
+			transparency 1
+			diffuseColor 0.2 0.75 1
+		}
+	}
+	geometry Text {
+		maxExtent 8
+		string [
+			"Il y a très longtemps, dans une galaxie lointaine,",
+			"très lointaine...."
+		]
+		fontStyle FontStyle	{
+			family "SANS"
+			style "BOLD"
+			size 0.5
+		}
+	}
+}
+]}
+
+DEF storyImage Transform {
+	scale 0 0 0
+	children [
+	Shape {
+		appearance Appearance {
+			material DEF Mat_storyImage Material {
+				transparency 0
+			}
+			texture	ImageTexture {
+				url	"../textures/starwars.png"
+			}
+		}
+		geometry Box {
+			size 12 6 0
+		}
+	}
+]}
+
+Sound {
+	maxFront 4500
+	maxBack 4500
+	source DEF S_storyImage AudioClip {
+	  url "../sounds/star_wars.mp3"
+}
+}
+
+
+DEF	TS_storyText0 TimeSensor	{
+	cycleInterval 6
+}
+DEF SI_storyText0 ScalarInterpolator  {
+	key	[0 0.15 0.85 1]
+	keyValue [1, 0, 0, 1]
+}
+
+DEF	TS_storyImage TimeSensor	{
+	cycleInterval 11
+}
+DEF PI_storyImage PositionInterpolator  {
+	key	[0 0.08 0.08 0.5 0.8 1]
+	keyValue [0 0 0, 0 0 0, 1 1 1, 0.1 0.1 0.1, 0.1 0.1 0.1, 0 0 0]
+}
+
+DEF	TS_storyText TimeSensor	{
+	cycleInterval 78
+}
+
+DEF PI_storyText PositionInterpolator  {
+	key	[0 1]
+	keyValue [0 -8 0, 0 35 0]
+}
+DEF SI_storyText ScalarInterpolator  {
+	key	[0.97 1]
+	keyValue [0, 1]
+}
+
+
+DEF SCR_story Script {
+	eventIn	SFFloat storyText0_fraction_changed
+	eventIn	SFFloat storyImage_fraction_changed
+	eventOut SFTime	startTime
+	eventOut SFTime	storyText0_endTime
+	eventOut SFTime	storyImage_endTime
+
+	url	["javascript:
+		function initialize()
+		{
+			startTime = Math.round(new Date().getTime() / 1000) + 1;
+		}
+		function storyText0_fraction_changed(fraction_changed)
+		{
+			if (fraction_changed >= 1)
+			{
+				storyText0_endTime = Math.round(new Date().getTime() / 1000);
+			}
+		}
+		function storyImage_fraction_changed(fraction_changed)
+		{
+			if (fraction_changed >= 0.5)
+			{
+				storyImage_endTime = Math.round(new Date().getTime() / 1000);
+			}
+		}
+		"]
+}
+
+
+ROUTE TS_storyText0.fraction_changed TO SI_storyText0.set_fraction
+ROUTE SI_storyText0.value_changed TO Mat_storyText0.transparency
+
+ROUTE TS_storyImage.fraction_changed TO PI_storyImage.set_fraction
+ROUTE PI_storyImage.value_changed TO storyImage.scale
+
+ROUTE TS_storyText.fraction_changed	TO PI_storyText.set_fraction
+ROUTE PI_storyText.value_changed TO storyText.translation
+ROUTE TS_storyText.fraction_changed	TO SI_storyText.set_fraction
+ROUTE SI_storyText.value_changed TO Mat_storyText.transparency
+
+
+ROUTE SCR_story.startTime TO TS_storyText0.startTime
+ROUTE TS_storyText0.fraction_changed TO SCR_story.storyText0_fraction_changed
+ROUTE SCR_story.storyText0_endTime TO TS_storyImage.startTime
+ROUTE SCR_story.storyText0_endTime TO S_storyImage.startTime
+ROUTE TS_storyImage.fraction_changed TO SCR_story.storyImage_fraction_changed
+ROUTE SCR_story.storyImage_endTime TO TS_storyText.startTime
+
+
