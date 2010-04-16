@@ -1,22 +1,8 @@
 #VRML V2.0 utf8 
-# 3D by Reuben Reyes Software hitechmex@austin.rr.com
 
 Viewpoint {
 position 0 0 60.0
 description "Ceinture asteroides"
-}
- 
-Shape {
-appearance Appearance {
-material Material { } }
-geometry Text {
-string [
-"Shape by Peter Thomas: Cornell University",
-"Image Texture Map from NASA",
-"3D by Reuben Reyes",
-"hitechmex@austin.rr.com" ]
-fontStyle FontStyle { size  .525505  justify "MIDDLE" }
-}
 }
  
 Group {
