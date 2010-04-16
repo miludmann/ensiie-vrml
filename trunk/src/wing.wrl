@@ -7,9 +7,6 @@
 DEF BackgroundImage Info {
           string "space.gif"
  }
-WWWAnchor {
-        name"http://members.tripod.com/~FrySaturn"
-        description "X-Wing"
 
 Separator {
     PerspectiveCamera {
@@ -515,4 +512,3 @@ Separator {
         Sphere { radius 1.00000 }
     }
    }
-}

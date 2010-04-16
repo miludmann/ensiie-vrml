@@ -1,16 +1,26 @@
+Ceci est la version finale de notre projet.
+
+Fichiers à exécuter :
+- story.wrl
+- main.wrl
+
+
 #=================================================================================================================#
 #============================================= Un peu d'histoire... ==============================================#
 
-Il était une fois, dans une galaxie lontaine, très lointaine... (mais furieusement ressemblante au système dans 
-lequel nous vivons)
+"Il y a très longtemps, dans une galaxie lontaine, très lointaine..."
 
-....................
-blabla, Gordon's Story
-....................
+Pour connaître la suite, exécuter le fichier story.wrl  :)
+
 
 
 #=================================================================================================================#
 #================================== Composition et fonctionnement de la scène ====================================#
+
+Pour voir la scène complète, exécuter le fichier main.wrl
+
+Pour se déplacer de lieu, changer de Viewpoint (16 Viewpoints)
+
 
 _________________________
 ! Précisions techniques !
@@ -32,6 +42,66 @@ grande surprise, envisager de s'envoller pour s'élever davantage et progresser v
 ___________________
 I-La base terrestre
 -------------------
+
+La base terrestre est le lieu où se sont réfugiés les r2d2 rescapés.
+Elle est située sur la chaine himalayenne.
+
+	_________________
+	I-1) Composition
+		a) Paysage
+
+La base est encerclés par les montagnes.
+Derrière celles-ci s'esquisse un ciel bleu sombre virant au rouge.
+On peut d'ailleurs y voir passer tous les astres et objets du système Exodus.
+
+La visibilité du lieu y est faible à cause d'un brouillard environnant, assombrissant les objets lointains
+d'un couleur violacée.
+
+		b) Objets
+
+La base peut être décomposée en trois sous-lieux :
+
+	- Le village des r2d2 : on y trouve des maisons et des routes sur lesquelles se balladent des r2d2
+	- La forêt : on y trouve des arbres de tailles différentes, autour desquelles virevollent des papillons
+	- La base militaire : on y trouve un héliport sur élévé, sur lequel est posé un vaisseau spatial,
+et autour duquel sont construirs de nombreuses tours de contôles.
+
+
+	_________________
+	I-2) Interaction
+
+		a) Déplacements
+
+On peut se déplacer simplement sur la base en utilisant les fonctionnalités du mode "Fly"
+Notons les raccourcis :
+-Ctrl et Maj pour se déplacer plus rapidement
+-Alt pour se déplacer sur le plan vertical
+-Espace pour orienter la vue
+
+		b) Animations
+
+-Les robots r2d2 se déplaçent automatiquement le long des routes (entre leurs maisons).
+-Les papillons de la forêt se déplace autour des arbres en battant des ailes.
+-On aperçoit dans le ciel le déplacement des astres autours de la base.
+
+		c) Interaction avec les r2d2
+
+On peut interagir avec les robots r2d2 en cliquant :
+
+	- sur leurs jambes : ils s'agitent alors rapidement de tous les côtés
+	- sur leur tronc : ils balancent alors leur tronc d'avant en arrière
+	- sur leur tête : ils font alors un tour avec leur tête
+	- sur le bouton sur leur tête : ils affichent alors un hologramme dans lequel un message s'affiche...
+
+
+		c) Interaction avec le buggy
+
+En cliquant sur le buggy, celui fait un petit tour du quartier.
+
+		d) Interaction avec le vaisseau spatial
+
+En cliquant sur le vaisseau spatial, celui-ci s'élève dans les airs, puis s'écarte rapidement de la base.
+Il reviendra se reposer sur l'héliport 2 minutes après.
 
 
 ____________________
@@ -102,7 +172,15 @@ automatiquement le vaisseau-OVNI circulaire gris.
 Sa particularité est qu'il évitera toutes les planètes en déplacement et l'astre central (Exodus) sur son passage :
 aucun de ces corps célestes n'est traversable par cet objet.
 
-		c) Animations
+		c) Interaction avec les vaisseaux X-Wing
+
+D'abord, pour apprécier au mieux cette fonctionnalité, il est recommandé de choisir le point de vue "X-Wings".
+
+Deux missiles sont accrochés aux ailes de chaque vaisseau X-Wing. En cliquant sur un de ces vaisseaux, celui-ci
+tire ses deux missiles devant lui, puis en recharge deux autres sur ses ailes.
+
+
+		d) Animations
 
 Les animations automatiques sont de trois sortes :
 
