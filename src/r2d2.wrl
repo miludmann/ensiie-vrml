@@ -1,18 +1,5 @@
 #VRML V2.0 utf8
 
-# Name : R2D2
-# Created by : David J.P. OTT
-# Date : mai 1998
-#
-# Description :
-# The basic but yet unachieved purpose of this robot is
-# to serve as a guide in a virual world. For the moment
-# it's more a toy than a guide. It can turn the head when
-# clicked, swing the body when clicked, dance (move on the legs)
-# when clicked, and produce a holographic:) contents, that could
-# eventually serve as a map cheat sheet.
-# 2 levels of detail (LOD) should increase rendering.
-
 DEF r2d2 Transform {
   scale .2 .2 .2
   children Transform {
@@ -21,9 +8,8 @@ DEF r2d2 Transform {
 	LOD {
 	range [ 500]
 	level [
-###################################
-# level 0
-###################################
+
+# niveau 0
 Group {
 children [
       DEF PI_r2d2 PositionInterpolator {
@@ -49,9 +35,7 @@ children [
       Group {
         children [
 
-############################
-# r2d2 legs
-############################
+# r2d2 jambes
 
 DEF R2D2_Propulsion Group {
 	children [
@@ -63,15 +47,13 @@ DEF R2D2_Propulsion Group {
 		children [
 
 
-	#
-	# R2D2_Hip&Thigh
-	#
+	# R2D2_hanche_cuisses
       Transform {
 	 translation 0 2.5 0
 	 children [
 
 	    #
-	    # R2D2_Hip
+	    # R2D2_hanche
 	    #
 	    Transform {
 	       translation 0 1.5 0
@@ -118,7 +100,7 @@ DEF R2D2_Propulsion Group {
 	    }
 
 	    #
-	    # R2D2_Thigh
+	    # R2D2_cuisse
 	    #
 
 	    DEF R2D2_Thigh Transform {
@@ -140,7 +122,7 @@ DEF R2D2_Propulsion Group {
       }
 
       #
-      # R2D2_Foot
+      # R2D2_pied
       #
       DEF R2D2_Foot Transform { 
 	translation -.4 0 0
@@ -176,10 +158,7 @@ Transform {
         ]
       }
 
-############################
-# r2d2 trunk
-############################
-
+# r2d2 torse
 DEF r2d2_trunk Transform {
   center 0 -2 0
   children [
@@ -187,7 +166,7 @@ DEF r2d2_trunk Transform {
       children [
 
 #
-# button on the head
+# bouton de la tete
 #
 	Transform {
 	  translation 0 2 0
@@ -233,7 +212,7 @@ DEF r2d2_trunk Transform {
 	}
 
 #
-# Sphere of the head
+# Sphere de la tete
 #
 	Group {
   	  children [
@@ -266,7 +245,7 @@ DEF r2d2_trunk Transform {
 	  ]
 	}
 #
-# The eye
+# l'oeil
 #
 	Transform {
 	  rotation 1 0 0 -.25
@@ -386,9 +365,7 @@ DEF r2d2_trunk Transform {
       }
 
 #
-# R2D2_Body i.e. cylindrical body
-#
-# the transform node puts R2D2_Body down by 2 relative to the head
+# R2D2_corps
 #
 	
 	DEF body Group {
@@ -453,9 +430,9 @@ DEF r2d2_trunk Transform {
 }
 ]
 }
-####################################
-# level 1
-####################################
+
+
+# niveau 1
 Group {}
 
     ]
@@ -463,7 +440,7 @@ Group {}
 ]
 }
 }
-# r2d2 move
+# r2d2 mouvement
 ROUTE TOS_r2d2.touchTime TO TS_r2d2.startTime
 ROUTE TS_r2d2.fraction_changed TO PI_r2d2.set_fraction
 ROUTE PI_r2d2.value_changed TO r2d2.translation
@@ -471,35 +448,35 @@ ROUTE PI_r2d2.value_changed TO r2d2.translation
 # r2d2 chat
 ROUTE TOS_r2d2.touchTime TO S_r2d2.startTime
 
-# r2d2 orientation change
+# r2d2 orientation
 ROUTE OI_r2d2.value_changed TO r2d2.rotation
 ROUTE TOS_r2d2.touchTime TO TS2_r2d2.startTime
 ROUTE TS_r2d2.fraction_changed TO OI_r2d2.set_fraction
 
-# button animation sound
+# bouton son
 ROUTE TOS_button.touchTime TO S_button.startTime
 
-# button animation
+# bouton animation
 ROUTE PI_button.value_changed TO button.translation
 ROUTE TOS_button.touchTime TO TS_button.startTime
 ROUTE TS_button.fraction_changed TO PI_button.set_fraction
 
-# button hologram
+# bouton hologramme
 ROUTE TOS_button.touchTime TO SCR_holo.touchTime
 ROUTE SCR_holo.whichChoice TO SW_holo.whichChoice
 
-# head animation sound
+# tete son
 ROUTE TOS_head.touchTime TO S_head.startTime
 
-# head animation
+# tete animation
 ROUTE OI_head.value_changed TO head.rotation
 ROUTE TOS_head.touchTime TO TS_head.startTime
 ROUTE TS_head.fraction_changed TO OI_head.set_fraction
 
-# body animation sound
+# corps son
 ROUTE TOS_body.touchTime TO S_body.startTime
 
-# body animation
+# corps animation
 ROUTE OI_body.value_changed TO r2d2_trunk.rotation
 ROUTE TOS_body.touchTime TO TS_body.startTime
 ROUTE TS_body.fraction_changed TO OI_body.set_fraction

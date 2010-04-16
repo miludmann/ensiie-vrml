@@ -9,6 +9,18 @@
 # C'est dessus que se trouve la base spatiale où se meuvent d'autres objets
 # à une échelle très faible comparé au reste de la scène.
 ##
+
+# Proto de copie d'objets
+EXTERNPROTO Copy [ 
+                    field SFInt32    copies           
+                    field SFVec3f    center           
+                    field SFVec3f    translation      
+                    field SFVec3f    scale            
+                    field SFRotation scaleOrientation 
+                    field SFRotation rotation         
+                    field MFNode     children         
+                   ] "../protos/CopyPROTO.wrl"
+
 Viewpoint {
 	position 3800 150 0
 	orientation 0 -.5 -.1 -1.57
@@ -81,9 +93,9 @@ Transform {
 	children	[
 
 DEF baseVp1 Viewpoint {
-	position 3 15 20
+	position 3 22 33
 	orientation	1 0 0 -0.6
-	description "Base"
+	description "Base r2d2 (extérieur)"
 } 
 
  
@@ -146,7 +158,23 @@ Shape {
 Transform {
 	translation 0 0.5 0
  children [
-	 Inline	{url "butterfly.wrl"}
+		Copy {
+		   copies 2
+		   center 0 0 0
+		   translation 8 4 4
+		   rotation 1 0 0 0
+		   scale 1 1 1
+		   children [
+				Inline	{url "butterfly.wrl"}
+    		 ]
+	 }
+		Copy {
+		   copies 3
+		   center 0 0 0
+		   translation 3 0 4
+		   rotation 1 0 0 0
+		   scale 1 1 1
+		   children [
 Transform {
  children [ 
 	 Inline	{url "arbre.wrl"}
@@ -169,6 +197,8 @@ Transform {
  children [ 
 	 Inline	{url "arbre.wrl"}
  ]}
+    		 ]
+	 }
 
 Transform {
 	translation	80 0.01 0
@@ -897,7 +927,7 @@ Transform {
 
  	DEF baseVp2 Viewpoint {
 	position 1 5 25
-	description "Buggy"
+	description "Base r2d2 (intérieur)"
 } 
 
 DEF baseNav2 NavigationInfo {

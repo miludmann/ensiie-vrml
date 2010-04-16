@@ -1,0 +1,79 @@
+#VRML V2.0 utf8
+
+
+##
+# Fichier principal, qui installe la scène
+##
+NavigationInfo {
+	avatarSize [ 0.25, 1.6, 0.75 ]
+	#type "FLY"
+	headlight TRUE
+	speed 50.00
+}
+
+# Deux points de vue globaux
+Viewpoint {
+	position 0 150 300
+	orientation 1 0 0 -.57
+	description "Exodus Cluster"
+	
+} 
+Viewpoint { 
+   position 0 370 0.027
+   orientation 1 0 0 -1.57
+   description "God's eye view"
+   jump FALSE
+}
+
+# Fond de ciel étoilé
+Background {
+	skyColor [
+		0.0 0.0 0.0,
+		
+		
+	]
+
+	skyAngle [ 1.309, 1.571 ]
+	groundColor [
+		0.0 0.0 0.0,
+		
+	]
+	groundAngle [ 1.309, 1.571 ]
+	
+	# URL arrière, bas, avant, gauche, droite, haut
+	topUrl "textures/space2.jpg"
+	backUrl "textures/space2.jpg"
+	bottomUrl "textures/space2.jpg"
+	frontUrl "textures/space2.jpg"
+	leftUrl "textures/space2.jpg"
+	rightUrl "textures/space2.jpg"
+}
+
+# Musique d'ambiance (extrait du merveilleux jeu de rôle/Space opera qu'est Mass Effect)
+Sound {
+			maxFront 4500
+			maxBack 4500
+			location 0 0 0
+			
+source AudioClip { startTime 1
+			stopTime 0
+                  url  "sounds/massEffect.mp3" 
+			loop TRUE
+	
+              }
+
+}
+
+# Inclusion du système en lui-même, avec ses planètes
+Collision {
+	collide	FALSE
+	children [
+Transform {
+	translation 0 0 0
+	scale .01 .01 .01
+			children [
+				Inline { url "src/system.wrl" },
+				
+			]
+		}
+]}

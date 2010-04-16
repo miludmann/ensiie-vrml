@@ -418,26 +418,109 @@ DEF Fleet2 Transform {
 			scale 30 30 30	
 			children [
 				Viewpoint {
-					position 20 0 0
+					position 25 3 0
 					orientation 0 .5 .15 1.57
 					description "X-Wings"
 				}
 			   
-				Inline { url "wing.wrl" },
+				Transform {
+					children [
+					Inline { url "wing.wrl" }
+					DEF missile Transform {
+						children [
+							DEF TR_missile Transform {
+						translation	0 0 0
+						rotation 0 0 1 1.57
+						children [
+						Transform {
+							translation	-0.2 -1 0.6
+							children [
+							DEF SH_missile Shape {
+								appearance Appearance {
+									material Material {
+										diffuseColor 1 0 0
+									}
+								}
+								geometry Cylinder {
+								radius 0.2
+								height 0.8
+							}
+						}
+					]}
+						Transform {
+							translation	0 -1 7.65
+							children [
+							USE SH_missile
+						]}
+						]
+					}
+					]
+				}
+					DEF TOS_wing TouchSensor {}
+					DEF TS_wing TimeSensor {cycleInterval 1}
+					DEF	PI_wing PositionInterpolator {
+						key	[0, 1, 1]
+						keyValue [0 0 0, -1000 0 0, 0 0 0]
+					}
+			]}
 				Transform {
 					translation	0 -10 5
 					children [
-						Inline { url "wing.wrl" },
+						Inline { url "wing.wrl" }
+					DEF missile2 Transform {
+						children [
+							USE	TR_missile
+						]}
+					DEF TOS_wing2 TouchSensor {}
+					DEF TS_wing2 TimeSensor {cycleInterval 1}
+					DEF	PI_wing2 PositionInterpolator {
+						key	[0, 1, 1]
+						keyValue [0 0 0, -1000 0 0, 0 0 0]
+					}
 					]
 				}
 				Transform {
 					translation	0 -10 -5
 					children [
-						Inline { url "wing.wrl" },
+						Inline { url "wing.wrl" }
+					DEF missile3 Transform {
+						children [
+							USE	TR_missile
+						]}
+					DEF TOS_wing3 TouchSensor {}
+					DEF TS_wing3 TimeSensor {cycleInterval 1}
+					DEF	PI_wing3 PositionInterpolator {
+						key	[0, 1, 1]
+						keyValue [0 0 0, -1000 0 0, 0 0 0]
+					}
 					]
 				}
+	Sound {
+	priority 1
+	minFront 100
+	minBack 100
+	maxFront 300
+	maxBack 300
+	source DEF S_wing AudioClip {
+	  url "../sounds/heat-vision.mp3"
+	}
+      }
+
 			]
 }]}
+ROUTE TOS_wing.touchTime TO	TS_wing.startTime
+ROUTE TS_wing.fraction_changed TO PI_wing.set_fraction
+ROUTE PI_wing.value_changed	TO missile.translation
+ROUTE TOS_wing2.touchTime TO	TS_wing2.startTime
+ROUTE TS_wing2.fraction_changed TO PI_wing2.set_fraction
+ROUTE PI_wing2.value_changed	TO missile2.translation
+ROUTE TOS_wing3.touchTime TO	TS_wing3.startTime
+ROUTE TS_wing3.fraction_changed TO PI_wing3.set_fraction
+ROUTE PI_wing3.value_changed	TO missile3.translation
+
+ROUTE TOS_wing.touchTime TO	S_wing.startTime
+ROUTE TOS_wing2.touchTime TO	S_wing.startTime
+ROUTE TOS_wing3.touchTime TO	S_wing.startTime
 
 
 DEF FleetOi OrientationInterpolator {
