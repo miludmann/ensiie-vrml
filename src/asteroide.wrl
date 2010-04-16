@@ -5,7 +5,7 @@ DEF M Transform {
 	scale 1 1 1
 	
 			children [
-				Inline { url "phobos.wrl" },
+				Inline { url "styx.wrl" },
 				
 			]
 		}
