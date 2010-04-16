@@ -132,8 +132,12 @@ Shape {
 	}
    appearance Appearance { 
 	  texture ImageTexture {
-		  url "../textures/sol.jpg"
+		  url "../textures/grass2.jpg"
 	  }
+	  textureTransform TextureTransform {
+          scale 5 5
+          rotation -0.5
+        } 
   }
 }
            ] 
