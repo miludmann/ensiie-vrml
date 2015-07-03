@@ -1,0 +1,1 @@
+This project consists in the creation of a whole virtual autonomous and interactive world, which simulates an "artificial life". The computer modelling is made thanks to VRML 2.0.
